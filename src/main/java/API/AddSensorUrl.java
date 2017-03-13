@@ -13,7 +13,7 @@ import spark.Response;
  */
 public class AddSensorUrl implements IURL {
     public void OpenUrl(){
-        post("/addsensor", ( req, res) -> {
+        post("/sensor/:id", ( req, res) -> {
             if(req.contentType().equals("application/json")){
                 return Interact(req, res);
             }

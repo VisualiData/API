@@ -13,7 +13,7 @@ import static spark.Spark.get;
  */
 public class GetAllSensorsUrl implements IURL {
     public void OpenUrl(){
-        get("/sensor/:id", ( req, res) -> {
+        get("/sensors", ( req, res) -> {
             if(req.contentType().equals("application/json")){
                 return Interact(req, res);
             }

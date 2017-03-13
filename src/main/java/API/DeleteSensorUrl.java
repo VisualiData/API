@@ -5,14 +5,14 @@ import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
 
-import static spark.Spark.post;
+import static spark.Spark.delete;
 
 /**
  * Created by Gebruiker on 13-3-2017.
  */
 public class DeleteSensorUrl implements IURL {
     public void OpenUrl(){
-        post("/addsensor", ( req, res) -> {
+        delete("/addsensor", ( req, res) -> {
             if(req.contentType().equals("application/json")){
                 return Interact(req, res);
             }
