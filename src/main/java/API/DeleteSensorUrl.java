@@ -1,8 +1,7 @@
 package API;
 
 import Sensors.SensorsRoute;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 
@@ -23,12 +22,7 @@ public class DeleteSensorUrl implements IURL {
     }
     public JSONObject Interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
-        JSONObject requestBody = null;
-        try {
-            requestBody = new JSONObject(req.body());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        JSONObject requestBody = new JSONObject();
         return sensorRoute.DeleteSensor(requestBody);
     }
 }

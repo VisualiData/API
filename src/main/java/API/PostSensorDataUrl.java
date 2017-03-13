@@ -1,8 +1,9 @@
 package API;
 
 import Sensors.SensorDataRoute;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.util.JSON;
+import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 
@@ -23,12 +24,7 @@ public class PostSensorDataUrl implements IURL{
     }
     public JSONObject Interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
-        JSONObject requestBody = null;
-        try {
-            requestBody = new JSONObject(req.body());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        BasicDBObject requestBody = (BasicDBObject) JSON.parse(req.body());
         return sensorRoute.UpdateSensorData(requestBody);
     }
 }

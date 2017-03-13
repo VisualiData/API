@@ -1,16 +1,17 @@
 package Sensors;
 
-import DataBase.DBConnector;
-import org.json.JSONObject;
+import Database.DBConnector;
+import com.mongodb.BasicDBObject;
+import org.json.simple.JSONObject;
 
 /**
  * Created by Gebruiker on 13-3-2017.
  */
 public class SensorsRoute {
     DBConnector connector = DBConnector.getInstance();
-    public JSONObject AddSensor (JSONObject reqBody) {
-        // bouw die shit om
-        return connector.Create("",reqBody);
+    public JSONObject AddSensor (BasicDBObject reqBody) {
+        JSONObject result = connector.insert(reqBody, "dev_table");
+        return result;
     }
     public JSONObject UpdateSensor (JSONObject reqBody) {
         // bouw die shit om

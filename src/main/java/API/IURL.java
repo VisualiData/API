@@ -1,6 +1,6 @@
 package API;
 
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 
