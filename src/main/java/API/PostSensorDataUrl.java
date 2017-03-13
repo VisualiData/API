@@ -1,6 +1,7 @@
 package API;
 
 import Sensors.SensorDataRoute;
+import org.json.JSONException;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
@@ -22,7 +23,12 @@ public class PostSensorDataUrl implements IURL{
     }
     public JSONObject Interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
-        JSONObject requestBody =  new JSONObject(req.body());
+        JSONObject requestBody = null;
+        try {
+            requestBody = new JSONObject(req.body());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return sensorRoute.UpdateSensorData(requestBody);
     }
 }

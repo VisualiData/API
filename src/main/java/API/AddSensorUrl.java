@@ -4,6 +4,7 @@ import Sensors.SensorsRoute;
 
 import static spark.Spark.post;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import spark.Request;
 import spark.Response;
@@ -23,7 +24,12 @@ public class AddSensorUrl implements IURL {
     }
     public JSONObject Interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
-        JSONObject requestBody =  new JSONObject(req.body());
+        JSONObject requestBody = null;
+        try {
+            requestBody = new JSONObject(req.body());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return sensorRoute.AddSensor(requestBody);
     }
 }
