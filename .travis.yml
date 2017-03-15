@@ -1,12 +1,10 @@
 language: java
 jdk: oraclejdk8
 addons:
-  sonarqube:
-    token:
-      secure: 11a58d0cb59c61527b24237059ae4d71b6965fbd # encrypted value of your token
   branches:
     - master
     - /^arko.*$/
+    - arko/db-wip
 script:
   # other script steps might be done before running the actual SonarQube analysis
   - sonar-scanner
