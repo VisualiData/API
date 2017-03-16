@@ -7,13 +7,14 @@ jdk:
 
 addons:
   sonarqube:
+    branches:
+      - "arko/db-wip"
+      - "/^arko"
+      - arko/db-wip
+      - /^arko
     token:
       secure: M1D3UQGEkCd6LLY/UMSAzOl2Ou0vX1o6qYRyr23YHWEfJ+tZJpGQ7hKTIJ/hcJtB5/5+u5KjMP8EY/xJK8nkDTb7Mn/BHF73uSNbF9IR9SDlvxefJFgjJPYIDKqV8QCoshA3GIBcNRGTUL1+JqQyF6jRrtTcOqEsoCzzxe8uNjUw8dvUu9kNfwJhZ61dce3sqkLcExOGR7/tT7kv2YWindqwa0f8wJwRk9j6NoOf5V1PVR1hPbFqdxBQjCRTu/dFzrO9+kF7y0ADqvcQS82wP/WXB9HE5MSgxgLDOl7Hhwj+nki7+lCxf8IWHA5NXRK4ymhci5I38r8QJ+5iiCuAWLJZa9+rPv26pPdJ2/WdIzqIX7zhwOoJt+CjoVBcp8evr1E/Pe4JF+cVEyhY3IsoJq8OvLSrWMZXChBtjjdIHf9rvtot+QIKVbQLgIsprhPYD+DKhMQb3BcV5u0t8iSVvh6R1OZA1hmpScSr8PiMtZTSc4F1e2XVhWU1P2g3PV1ThZd9eULZy8+KLT0GD+dDFtCIjf3dgXCl/1s5FYkUe6TMboVH+XPJpiyzuY0BxskiPGj9kLAeY1Pa5Tv3rboV/6lGAwFvNN9hK8YxH04MzPmCA64dC6v5G9uMi2yjTIgXIDTd4ZH2FZDMpmEvwQWVbs5DSbdCeEZ6c4OeQuCdDqI=
-  branches:
-    - "arko/db-wip"
-    - "/^arko"
-    - arko/db-wip
-    - /^arko
+
 
 cache:
   directories:
