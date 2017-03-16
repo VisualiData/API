@@ -7,6 +7,7 @@ jdk:
 
 addons:
   sonarqube:
+    organization: visualidata
     branches:
       - "arko/db-wip"
       - "/^arko"
