@@ -12,11 +12,12 @@ jdk:
   - oraclejdk8
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - sonar-scanner
 
 branches:
   only:
   - master
+  - /^arko
   - "/^arko"
   - "/^reinier"
   - /.*/
