@@ -3,8 +3,7 @@
  */
 
 import API.*;
-
-import static spark.Spark.*;
+import database.DBConnector;
 
 public class Application{
     public static void main (String[] args){
@@ -12,6 +11,7 @@ public class Application{
     }
 
     public static void start(){
+        DBConnector.initDB();
         IURL[] addUrls = {
                 new AddSensorUrl(),
                 new DeleteSensorUrl(),
@@ -26,5 +26,6 @@ public class Application{
 
     public void stop(){
         stop();
+        DBConnector.close();
     }
 }

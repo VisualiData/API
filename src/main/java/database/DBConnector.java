@@ -1,10 +1,9 @@
-package Database;
+package database;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.util.JSON;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -13,14 +12,14 @@ import org.json.simple.JSONObject;
  */
 public class DBConnector {
     private static DBConnector ourInstance = new DBConnector();
-    private MongoDatabase db;
+    private static MongoDatabase db;
+    private static MongoClient client;
 
     public static DBConnector getInstance() {
         return ourInstance;
     }
 
-    private DBConnector() {
-        MongoClient client;
+    public static void initDB(){
         String mongodb_host = "localhost";
 
         if(System.getenv("MONGODB_HOST") != null){
@@ -34,6 +33,7 @@ public class DBConnector {
             System.err.println("Could not connect to MongoDB: " + e.getMessage());
         }
     }
+
     public JSONObject insert(BasicDBObject document, String collection_name){
         MongoCollection<BasicDBObject> collection = db.getCollection(collection_name, BasicDBObject.class);
         collection.insertOne(document);
@@ -53,6 +53,10 @@ public class DBConnector {
         }
         System.out.println(result.size() + "");
         return result;
+    }
+
+    public static void close(){
+        client.close();
     }
 
     public JSONObject Read(String key){
