@@ -1,62 +1,73 @@
 package database;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.MongoClient;
+import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-/**
- * Created by Gebruiker on 13-3-2017.
- */
+import java.util.Arrays;
+
 public class DBConnector {
+    private static final Logger LOGGER = LogManager.getLogger();
     private static DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
-
     public static DBConnector getInstance() {
         return ourInstance;
     }
 
+    // Initialize db connection
     public static void initDB(){
-        String mongodb_host = "localhost";
+        String mongodbHost = "localhost";
+        String user = System.getenv("MONGODB_USER");
+        String password = System.getenv("MONGODB_PASS");
 
         if(System.getenv("MONGODB_HOST") != null){
-            mongodb_host = System.getenv("MONGODB_HOST");
+            mongodbHost = System.getenv("MONGODB_HOST");
         }
-        try {
-            client = new MongoClient(mongodb_host, 27017);
-            db = client.getDatabase("dev");
-            System.out.println("Connected to db");
-        } catch (Exception e){
-            System.err.println("Could not connect to MongoDB: " + e.getMessage());
+        MongoCredential credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+        MongoClientOptions options = MongoClientOptions.builder()
+                .serverSelectionTimeout(1000)
+                .build();
+        ServerAddress address = new ServerAddress(mongodbHost, 27017);
+        client = new MongoClient(address, Arrays.asList(credential), options);
+        try{
+            client.getConnectPoint();
+            LOGGER.debug("Connected to db");
+        } catch (MongoTimeoutException e){
+            LOGGER.error("Could not connect to db");
+            LOGGER.error(e);
         }
+        db = client.getDatabase("dev");
     }
 
-    public JSONObject insert(BasicDBObject document, String collection_name){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collection_name, BasicDBObject.class);
+    // Close db connection
+    public static void close(){
+        client.close();
+    }
+
+    // Insert single document
+    public JSONObject insert(BasicDBObject document, String collectionName){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         collection.insertOne(document);
         JSONObject result = new JSONObject();
         result.put("message", "inserted");
         return result;
     }
 
-    public JSONArray find(String collection_name, String key, String value){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collection_name, BasicDBObject.class);
+    // Find document by specific value
+    public JSONArray find(String collectionName, String key, String value){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put(key, value);
-        System.out.println(value);
         JSONArray result = new JSONArray();
         for(BasicDBObject document: collection.find(whereQuery)){
             result.add(document);
         }
-        System.out.println(result.size() + "");
         return result;
-    }
-
-    public static void close(){
-        client.close();
     }
 
     public JSONObject Read(String key){
