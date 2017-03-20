@@ -1,6 +1,6 @@
 package Sensors;
 
-import Database.DBConnector;
+import database.DBConnector;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONObject;
 
