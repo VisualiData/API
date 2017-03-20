@@ -24,11 +24,16 @@ public class DBConnector {
         String mongodbHost = "localhost";
         String user = System.getenv("MONGODB_USER");
         String password = System.getenv("MONGODB_PASS");
-
+        MongoCredential credential = null;
         if(System.getenv("MONGODB_HOST") != null){
             mongodbHost = System.getenv("MONGODB_HOST");
         }
-        MongoCredential credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+        try {
+            credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+        }catch (NullPointerException e){
+            LOGGER.error("Username or password not defined in environment variables");
+            LOGGER.error(e);
+        }
         MongoClientOptions options = MongoClientOptions.builder()
                 .serverSelectionTimeout(1000)
                 .build();
@@ -78,6 +83,7 @@ public class DBConnector {
         }
         return result;
     }
+
     /* TODO update */
     public JSONObject Read(String key){
         return new JSONObject();
