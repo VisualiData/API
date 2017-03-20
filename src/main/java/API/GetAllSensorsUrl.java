@@ -23,6 +23,6 @@ public class GetAllSensorsUrl implements IURL {
     public JSONObject Interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
         JSONObject requestBody = new JSONObject();
-        return sensorRoute.GetAllSensors(requestBody);
+        return sensorRoute.GetAllSensors();
     }
 }

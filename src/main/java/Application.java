@@ -5,6 +5,11 @@
 import API.*;
 import database.DBConnector;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 public class Application{
     public static void main (String[] args){
         start();
@@ -22,6 +27,7 @@ public class Application{
         for (IURL url : addUrls){
             url.OpenUrl();
         }
+
     }
 
     public void stop(){
