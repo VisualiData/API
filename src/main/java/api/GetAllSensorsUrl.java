@@ -1,18 +1,18 @@
-package API;
+package api;
 
-import Sensors.SensorsRoute;
+import sensors.SensorsRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 
-import static spark.Spark.delete;
+import static spark.Spark.get;
 
 /**
  * Created by Gebruiker on 13-3-2017.
  */
-public class DeleteSensorUrl implements IURL {
+public class GetAllSensorsUrl implements IURL {
     public void OpenUrl(){
-        delete("/addsensor", ( req, res) -> {
+        get("/sensors", ( req, res) -> {
             if(req.contentType().equals("application/json")){
                 return Interact(req, res);
             }
@@ -23,6 +23,6 @@ public class DeleteSensorUrl implements IURL {
     public JSONObject Interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
         JSONObject requestBody = new JSONObject();
-        return sensorRoute.DeleteSensor(requestBody);
+        return sensorRoute.GetAllSensors(requestBody);
     }
 }

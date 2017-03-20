@@ -2,8 +2,10 @@
  * Created by Gebruiker on 13-3-2017.
  */
 
-import API.*;
+import api.*;
 import database.DBConnector;
+
+import static spark.Spark.after;
 
 public class Application{
     public static void main (String[] args){
@@ -22,6 +24,9 @@ public class Application{
         for (IURL url : addUrls){
             url.OpenUrl();
         }
+        after((request, response) -> {
+            response.type("application/json");
+        });
     }
 
     public void stop(){

@@ -1,4 +1,4 @@
-package Sensors;
+package sensors;
 
 import database.DBConnector;
 import com.mongodb.BasicDBObject;

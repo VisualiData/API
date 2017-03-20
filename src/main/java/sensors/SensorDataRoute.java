@@ -1,4 +1,4 @@
-package Sensors;
+package sensors;
 
 import database.DBConnector;
 import com.mongodb.BasicDBObject;
@@ -10,18 +10,21 @@ import org.json.simple.JSONObject;
  */
 public class SensorDataRoute {
     private DBConnector connector = DBConnector.getInstance();
-    public JSONObject GetSensorData (String SensorID) {
+    public JSONObject getSensorData(String SensorID) {
         // bouw die shit om
         JSONObject result = new JSONObject();
         JSONArray dbResult = connector.find("sensordata", "id", SensorID);
         result.put("data", dbResult);
         return result;
     }
-    public JSONObject UpdateSensorData (BasicDBObject reqBody) {
+    public JSONObject updateSensorData(BasicDBObject reqBody) {
         // bouw die shit om
         System.out.println(reqBody.toJson());
         connector.insert(reqBody, "sensordata");
 //        return connector.Update("",new JSONObject());
         return new JSONObject();
+    }
+    public JSONObject insertSensorData(BasicDBObject reqBody) {
+        return connector.insert(reqBody, "sensordata");
     }
 }
