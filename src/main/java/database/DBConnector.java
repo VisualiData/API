@@ -70,6 +70,15 @@ public class DBConnector {
         return result;
     }
 
+    public JSONArray findQuery(String collectionName, BasicDBObject whereQuery){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        JSONArray result = new JSONArray();
+        for(BasicDBObject document: collection.find(whereQuery)){
+            result.add(document);
+        }
+        return result;
+    }
+    /* TODO update */
     public JSONObject Read(String key){
         return new JSONObject();
     }
