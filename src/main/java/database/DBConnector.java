@@ -11,7 +11,7 @@ import org.json.simple.JSONObject;
 import java.util.Arrays;
 
 public class DBConnector {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
     private static DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
@@ -34,11 +34,11 @@ public class DBConnector {
             LOGGER.error("Username or password not defined in environment variables");
             LOGGER.error(e);
         }
-        MongoClientOptions options = MongoClientOptions.builder()
-                .serverSelectionTimeout(1000)
-                .build();
+        MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
+        optionsBuilder.serverSelectionTimeout(1000);
+        optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
         ServerAddress address = new ServerAddress(mongodbHost, 27017);
-        client = new MongoClient(address, Arrays.asList(credential), options);
+        client = new MongoClient(address, Arrays.asList(credential), optionsBuilder.build());
         try{
             client.getConnectPoint();
             LOGGER.debug("Connected to db");
@@ -57,9 +57,16 @@ public class DBConnector {
     // Insert single document
     public JSONObject insert(BasicDBObject document, String collectionName){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        collection.insertOne(document);
         JSONObject result = new JSONObject();
-        result.put("message", "inserted");
+        boolean inserted;
+        try {
+            collection.insertOne(document);
+            inserted = true;
+        }catch (Exception e){
+            LOGGER.debug(e);
+            inserted = false;
+        }
+        result.put("inserted", inserted);
         return result;
     }
 
