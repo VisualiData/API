@@ -2,10 +2,16 @@
  * Created by Gebruiker on 13-3-2017.
  */
 
-import API.*;
+import api.*;
 import database.DBConnector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import static spark.Spark.after;
+import static spark.Spark.before;
 
 public class Application{
+    private static final Logger LOGGER = LogManager.getLogger(Application.class);
     public static void main (String[] args){
         start();
     }
@@ -22,7 +28,12 @@ public class Application{
         for (IURL url : addUrls){
             url.OpenUrl();
         }
-
+        before((request, response) -> {
+            LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
+        });
+        after((request, response) -> {
+            response.type("application/json");
+        });
     }
 
     public void stop(){

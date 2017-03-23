@@ -11,7 +11,7 @@ import org.json.simple.JSONObject;
 import java.util.Arrays;
 
 public class DBConnector {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
     private static DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
@@ -24,16 +24,21 @@ public class DBConnector {
         String mongodbHost = "localhost";
         String user = System.getenv("MONGODB_USER");
         String password = System.getenv("MONGODB_PASS");
-
+        MongoCredential credential = null;
         if(System.getenv("MONGODB_HOST") != null){
             mongodbHost = System.getenv("MONGODB_HOST");
         }
-        MongoCredential credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
-        MongoClientOptions options = MongoClientOptions.builder()
-                .serverSelectionTimeout(1000)
-                .build();
+        try {
+            credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+        }catch (NullPointerException e){
+            LOGGER.error("Username or password not defined in environment variables");
+            LOGGER.error(e);
+        }
+        MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
+        optionsBuilder.serverSelectionTimeout(1000);
+        optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
         ServerAddress address = new ServerAddress(mongodbHost, 27017);
-        client = new MongoClient(address, Arrays.asList(credential), options);
+        client = new MongoClient(address, Arrays.asList(credential), optionsBuilder.build());
         try{
             client.getConnectPoint();
             LOGGER.debug("Connected to db");
@@ -52,9 +57,16 @@ public class DBConnector {
     // Insert single document
     public JSONObject insert(BasicDBObject document, String collectionName){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        collection.insertOne(document);
         JSONObject result = new JSONObject();
-        result.put("message", "inserted");
+        boolean inserted;
+        try {
+            collection.insertOne(document);
+            inserted = true;
+        }catch (Exception e){
+            LOGGER.debug(e);
+            inserted = false;
+        }
+        result.put("inserted", inserted);
         return result;
     }
 
@@ -78,10 +90,18 @@ public class DBConnector {
         }
         return result;
     }
-    /* TODO update */
-    public JSONObject Read(String key){
-        return new JSONObject();
+
+    public JSONArray getAllSensors(){
+        JSONArray result = new JSONArray();
+        for(String collectionName: db.listCollectionNames()){
+            if(!"sensordata".equals(collectionName)) {
+                result.add(collectionName);
+            }
+        }
+        return result;
     }
+
+    /* TODO update */
 
     public JSONObject Update (String key, JSONObject Value){
         return new JSONObject();
