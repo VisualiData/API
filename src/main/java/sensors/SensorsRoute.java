@@ -1,7 +1,8 @@
-package Sensors;
+package sensors;
 
 import database.DBConnector;
 import com.mongodb.BasicDBObject;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -10,8 +11,9 @@ import org.json.simple.JSONObject;
 public class SensorsRoute {
     DBConnector connector = DBConnector.getInstance();
     public JSONObject AddSensor (BasicDBObject reqBody) {
-        JSONObject result = connector.insert(reqBody, "dev_table");
-        return result;
+//        JSONObject result = connector.insert(reqBody, "dev_table");
+//        return result;
+        return new JSONObject();
     }
     public JSONObject UpdateSensor (JSONObject reqBody) {
         // bouw die shit om
@@ -21,7 +23,7 @@ public class SensorsRoute {
         // bouw die shit om
         return connector.Delete("");
     }
-    public JSONObject GetAllSensors(){
-        return connector.Read("");
+    public JSONArray getAllSensors(){
+        return connector.getAllSensors();
     }
 }

@@ -1,6 +1,6 @@
-package API;
+package api;
 
-import Sensors.SensorsRoute;
+import sensors.SensorsRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;

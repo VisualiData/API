@@ -1,6 +1,6 @@
 package database;
 
-import Sensors.SensorsRoute;
+import sensors.SensorsRoute;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,7 +17,7 @@ public class DBFormatter {
     private DBConnector connector = DBConnector.getInstance();
     public void formatDB(String timeframe, String newTimeframe){
         SensorsRoute sensorRoute = new SensorsRoute();
-        JSONObject allSensors = sensorRoute.GetAllSensors();
+        JSONArray allSensors = sensorRoute.getAllSensors();
         formatCollection("name", timeframe, newTimeframe);
     }
 

@@ -1,20 +1,21 @@
-package API;
+package api;
 
-import Sensors.SensorDataRoute;
+import sensors.SensorsRoute;
+
+import static spark.Spark.post;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 
-import static spark.Spark.post;
-
 /**
  * Created by Gebruiker on 13-3-2017.
  */
-public class PostSensorDataUrl implements IURL{
+public class AddSensorUrl implements IURL {
     public void OpenUrl(){
-        post("/sensor", ( req, res) -> {
+        post("/sensor/:id", ( req, res) -> {
             if(req.contentType().equals("application/json")){
                 return Interact(req, res);
             }
@@ -23,8 +24,8 @@ public class PostSensorDataUrl implements IURL{
         });
     }
     public JSONObject Interact(Request req, Response res){
-        SensorDataRoute sensorRoute = new SensorDataRoute();
+        SensorsRoute sensorRoute = new SensorsRoute();
         BasicDBObject requestBody = (BasicDBObject) JSON.parse(req.body());
-        return sensorRoute.UpdateSensorData(requestBody);
+        return sensorRoute.AddSensor(requestBody);
     }
 }
