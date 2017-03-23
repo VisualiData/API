@@ -23,7 +23,8 @@ public class Application{
                 new DeleteSensorUrl(),
                 new GetAllSensorsUrl(),
                 new GetSensorDataUrl(),
-                new PostSensorDataUrl()
+                new PostSensorDataUrl(),
+                new FormatDataBaseUrl()
         };
         for (IURL url : addUrls){
             url.OpenUrl();

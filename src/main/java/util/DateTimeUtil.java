@@ -27,16 +27,16 @@ public class DateTimeUtil {
         }
         if(!current){
             switch (timeFrame){
-                case "quarter":
+                case "frame":
                     quarterAdjustment = 1;
                     break;
-                case "hour":
+                case "quarter":
                     quarterAdjustment = 4;
                     break;
-                case "day":
+                case "hour":
                     quarterAdjustment = 96;
                     break;
-                case "week" :
+                case "day" :
                     quarterAdjustment = 672;
                     break;
             }

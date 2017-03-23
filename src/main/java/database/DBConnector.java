@@ -22,23 +22,26 @@ public class DBConnector {
     // Initialize db connection
     public static void initDB(){
         String mongodbHost = "localhost";
-        String user = System.getenv("MONGODB_USER");
-        String password = System.getenv("MONGODB_PASS");
-        MongoCredential credential = null;
         if(System.getenv("MONGODB_HOST") != null){
             mongodbHost = System.getenv("MONGODB_HOST");
         }
+        String user = System.getenv("MONGODB_USER");
+        String password = System.getenv("MONGODB_PASS");
+        MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
+            optionsBuilder.serverSelectionTimeout(1000);
+            optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
+        ServerAddress address = new ServerAddress(mongodbHost, 27017);
+        MongoCredential credential = null;
         try {
             credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+            client = new MongoClient(address, Arrays.asList(credential), optionsBuilder.build());
         }catch (NullPointerException e){
             LOGGER.error("Username or password not defined in environment variables");
             LOGGER.error(e);
+            client = new MongoClient(address, optionsBuilder.build());
         }
-        MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
-        optionsBuilder.serverSelectionTimeout(1000);
-        optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
-        ServerAddress address = new ServerAddress(mongodbHost, 27017);
-        client = new MongoClient(address, Arrays.asList(credential), optionsBuilder.build());
+
+
         try{
             client.getConnectPoint();
             LOGGER.debug("Connected to db");
@@ -46,7 +49,7 @@ public class DBConnector {
             LOGGER.error("Could not connect to db");
             LOGGER.error(e);
         }
-        db = client.getDatabase("dev");
+        db = client.getDatabase("visualidata");
     }
 
     // Close db connection
@@ -55,6 +58,7 @@ public class DBConnector {
     }
 
     // Insert single document
+    @SuppressWarnings("unchecked")
     public JSONObject insert(BasicDBObject document, String collectionName){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONObject result = new JSONObject();
@@ -71,6 +75,7 @@ public class DBConnector {
     }
 
     // Find document by specific value
+    @SuppressWarnings("unchecked")
     public JSONArray find(String collectionName, String key, String value){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         BasicDBObject whereQuery = new BasicDBObject();
@@ -82,6 +87,7 @@ public class DBConnector {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public JSONArray findQuery(String collectionName, BasicDBObject whereQuery){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
@@ -91,6 +97,8 @@ public class DBConnector {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
+    /* TODO sort result */
     public JSONArray getAllSensors(){
         JSONArray result = new JSONArray();
         for(String collectionName: db.listCollectionNames()){
