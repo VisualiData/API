@@ -4,6 +4,8 @@ import sensors.SensorsRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.DateTimeUtil;
+import util.ResponseUtil;
 
 import static spark.Spark.get;
 
@@ -12,17 +14,13 @@ import static spark.Spark.get;
  */
 public class GetAllSensorsUrl implements IURL {
     public void OpenUrl(){
-        get("/sensors", ( req, res) -> {
-            if(req.contentType().equals("application/json")){
-                return Interact(req, res);
-            }
-            System.out.println("not json");
-            return "Send Json";
+        get("/sensors", (req, res) -> {
+            return Interact(req, res);
         });
     }
     public JSONObject Interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
         JSONObject requestBody = new JSONObject();
-        return sensorRoute.GetAllSensors(requestBody);
+        return ResponseUtil.generateSuccess(sensorRoute.getAllSensors(requestBody));
     }
 }

@@ -91,10 +91,17 @@ public class DBConnector {
         return result;
     }
 
-    /* TODO update */
-    public JSONObject Read(String key){
-        return new JSONObject();
+    public JSONArray getAllSensors(){
+        JSONArray result = new JSONArray();
+        for(String collectionName: db.listCollectionNames()){
+            if(!"sensordata".equals(collectionName)) {
+                result.add(collectionName);
+            }
+        }
+        return result;
     }
+
+    /* TODO update */
 
     public JSONObject Update (String key, JSONObject Value){
         return new JSONObject();

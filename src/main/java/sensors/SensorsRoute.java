@@ -2,6 +2,7 @@ package sensors;
 
 import database.DBConnector;
 import com.mongodb.BasicDBObject;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -22,7 +23,7 @@ public class SensorsRoute {
         // bouw die shit om
         return connector.Delete("");
     }
-    public JSONObject GetAllSensors(JSONObject reqBody){
-        return connector.Read("");
+    public JSONArray getAllSensors(JSONObject reqBody){
+        return connector.getAllSensors();
     }
 }
