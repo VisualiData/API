@@ -18,26 +18,32 @@ public class DateTimeUtil {
 
     public static String GetDate(String timeFrame, boolean current){
         String format = "yyyy-MM-dd'T'00:00:00.00ZZ";
-        int HoursAdjustment = 0;
+        int quarterAdjustment = 0;
         if ("frame".equals(timeFrame)) {
-            format = "yyyy-MM-dd'T'HH:mm:ss.SSZZ";
+            format = "yyyy-MM-dd'T'HH:mm:00.00ZZ";
+        }
+        else if ("quarter".equals(timeFrame)){
+            format = "yyyy-MM-dd'T'HH:00:00.00ZZ";
         }
         if(!current){
             switch (timeFrame){
+                case "quarter":
+                    quarterAdjustment = 1;
+                    break;
                 case "hour":
-                    HoursAdjustment = 1;
+                    quarterAdjustment = 4;
                     break;
                 case "day":
-                    HoursAdjustment = 24;
+                    quarterAdjustment = 96;
                     break;
                 case "week" :
-                    HoursAdjustment = 168;
+                    quarterAdjustment = 672;
                     break;
             }
         }
         DateFormat df=new SimpleDateFormat(format);
         df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return df.format(new Date(System.currentTimeMillis() - 3600 * 1000 * HoursAdjustment));
+        return df.format(new Date(System.currentTimeMillis() - 3600 * 250 * quarterAdjustment));
     }
     public static long getDateDiff(String date1, String date2, TimeUnit timeUnit) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSZZ");
@@ -47,7 +53,6 @@ public class DateTimeUtil {
         }catch (ParseException e){
             diffInMillies = 0;
         }
-
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
     }
 }

@@ -18,16 +18,19 @@ public class SensorDataRoute {
         whereQuery.put("timestamp", new BasicDBObject("$lt",from));
         whereQuery.put("timestamp", new BasicDBObject("$gt",to));
         long diffrence = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
-        if(diffrence <= 1000 * 3600){
+        if(diffrence <= 1000 * 3600 * 2){
             whereQuery.put("timeframe", "frame");
         }
-        else if(diffrence > 1000 * 3600 * 10 && diffrence <= 1000 * 3600 * 24 * 10){
+        else if(diffrence > 1000 * 3600 * 2 && diffrence <= 1000 * 3600 * 10){
+            whereQuery.put("timeframe", "quarter");
+        }
+        else if(diffrence > 1000 * 3600 * 10 && diffrence <= 1000 * 3600 * 24 * 7){
             whereQuery.put("timeframe", "hour");
         }
-        else if(diffrence > 1000 * 3600 * 24 * 10 && diffrence <= 1000 * 3600 * 24 * 7 * 10){
+        else if(diffrence > 1000 * 3600 * 24 * 7 && diffrence <= 1000 * 3600 * 24 * 7 * 4){
             whereQuery.put("timeframe", "day");
         }
-        else if(diffrence > 1000 * 3600 * 24 * 7 * 10){
+        else if(diffrence > 1000 * 3600 * 24 * 7 * 4){
             whereQuery.put("timeframe", "week");
         }
         JSONObject result = new JSONObject();
