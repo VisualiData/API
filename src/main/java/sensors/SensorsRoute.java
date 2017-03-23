@@ -11,7 +11,7 @@ import org.json.simple.JSONObject;
 public class SensorsRoute {
     DBConnector connector = DBConnector.getInstance();
     public JSONObject AddSensor (BasicDBObject reqBody) {
-//        JSONObject result = connector.insert(reqBody, "dev_table");
+        JSONObject result = connector.insert(reqBody, "sensordata");
 //        return result;
         return new JSONObject();
     }
