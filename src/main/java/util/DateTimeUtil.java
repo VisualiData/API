@@ -24,13 +24,13 @@ public class DateTimeUtil {
         }
         if(!current){
             switch (timeFrame){
-                case "hour":
+                case "frame":
                     HoursAdjustment = 1;
                     break;
-                case "day":
+                case "hour":
                     HoursAdjustment = 24;
                     break;
-                case "week" :
+                case "day" :
                     HoursAdjustment = 168;
                     break;
             }

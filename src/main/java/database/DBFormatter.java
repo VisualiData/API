@@ -35,13 +35,16 @@ public class DBFormatter {
 
     private void  formatCollection(String collectionName, String timeframe, String newTimeframe){
         BasicDBObject whereQuery = new BasicDBObject();
+        BasicDBObject conditions = new BasicDBObject();
         whereQuery.put("timeframe", timeframe);
         String currentDate = DateTimeUtil.GetDate(timeframe, true);
-        String lastDate = DateTimeUtil.GetDate(newTimeframe, false);
-        whereQuery.put("timestamp", new BasicDBObject("$lt",currentDate));
-        whereQuery.put("timestamp", new BasicDBObject("$gt",lastDate));
+        String lastDate = DateTimeUtil.GetDate(timeframe, false);
+        conditions.put("$lt",currentDate);
+        conditions.put("$gt",lastDate);
+        whereQuery.put("timestamp", conditions);
         JSONArray period = connector.findQuery(collectionName,whereQuery);
-//        LOGGER.debug(period);
+        LOGGER.debug(whereQuery.toString());
+        LOGGER.debug(period.size());
 
         Double total = 0.00;
         for (Object object : period) {
