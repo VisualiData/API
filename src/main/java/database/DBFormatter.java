@@ -4,6 +4,8 @@ import sensors.SensorsRoute;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import util.DateTimeUtil;
+import util.ResponseUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,8 +33,8 @@ public class DBFormatter {
     private void  formatCollection(String collectionName, String timeframe, String newTimeframe){
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put("timeframe", timeframe);
-        String currentDate = GetDate(timeframe, true);
-        String lastDate = GetDate(newTimeframe, false);
+        String currentDate = DateTimeUtil.GetDate(timeframe, true);
+        String lastDate = DateTimeUtil.GetDate(newTimeframe, false);
         whereQuery.put("timestamp", new BasicDBObject("$lt",currentDate));
         whereQuery.put("timestamp", new BasicDBObject("$gt",lastDate));
         JSONArray period = connector.findQuery(collectionName,whereQuery);
@@ -46,29 +48,5 @@ public class DBFormatter {
         newDoc.put("value",total/period.size());
         newDoc.put("timeframe",newTimeframe);
         connector.insert(newDoc,collectionName);
-    }
-
-    private String GetDate(String timeframe, boolean current){
-        String format = "yyyy-MM-dd'T'00:00:00.00ZZ";
-        int HoursAdjustment = 0;
-        if (timeframe == "frame") {
-            format = "yyyy-MM-dd'T'HH:mm:ss.SSZZ";
-        }
-        if(!current){
-            switch (timeframe){
-                case "hour":
-                    HoursAdjustment = 1;
-                    break;
-                case "day":
-                    HoursAdjustment = 24;
-                    break;
-                case "week" :
-                    HoursAdjustment = 168;
-                    break;
-            }
-        }
-        DateFormat df=new SimpleDateFormat(format);
-        df.setTimeZone(TimeZone.getTimeZone("UTC"));
-        return df.format(new Date(System.currentTimeMillis() - 3600 * 1000 * HoursAdjustment));
     }
 }

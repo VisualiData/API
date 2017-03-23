@@ -4,15 +4,34 @@ import database.DBConnector;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import util.DateTimeUtil;
+
+import java.util.concurrent.TimeUnit;
 
 public class SensorDataRoute {
 
     private DBConnector connector = DBConnector.getInstance();
 
-    public JSONObject getSensorData(String SensorID) {
+    public JSONObject getSensorData(String SensorID,String from,String to) {
         // bouw die shit om
+        BasicDBObject whereQuery = new BasicDBObject();
+        whereQuery.put("timestamp", new BasicDBObject("$lt",from));
+        whereQuery.put("timestamp", new BasicDBObject("$gt",to));
+        long diffrence = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
+        if(diffrence <= 1000 * 3600){
+            whereQuery.put("timeframe", "frame");
+        }
+        else if(diffrence > 1000 * 3600 * 10 && diffrence <= 1000 * 3600 * 24 * 10){
+            whereQuery.put("timeframe", "hour");
+        }
+        else if(diffrence > 1000 * 3600 * 24 * 10 && diffrence <= 1000 * 3600 * 24 * 7 * 10){
+            whereQuery.put("timeframe", "day");
+        }
+        else if(diffrence > 1000 * 3600 * 24 * 7 * 10){
+            whereQuery.put("timeframe", "week");
+        }
         JSONObject result = new JSONObject();
-        JSONArray dbResult = connector.find("sensordata", "id", SensorID);
+        JSONArray dbResult = connector.findQuery(SensorID,whereQuery);
         result.put("data", dbResult);
         return result;
     }
