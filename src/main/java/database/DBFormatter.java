@@ -1,5 +1,7 @@
 package database;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sensors.SensorsRoute;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
@@ -16,6 +18,7 @@ import java.util.TimeZone;
  * Created by Gebruiker on 20-3-2017.
  */
 public class DBFormatter {
+    private static final Logger LOGGER = LogManager.getLogger(DBFormatter.class);
     private DBConnector connector = DBConnector.getInstance();
     public boolean formatDB(String timeframe, String newTimeframe){
         try{
@@ -38,11 +41,18 @@ public class DBFormatter {
         whereQuery.put("timestamp", new BasicDBObject("$lt",currentDate));
         whereQuery.put("timestamp", new BasicDBObject("$gt",lastDate));
         JSONArray period = connector.findQuery(collectionName,whereQuery);
-        int total = 0;
+//        LOGGER.debug(period);
+
+        Double total = 0.00;
         for (Object object : period) {
-            JSONObject stamp = (JSONObject)object;
-            total += (int)stamp.get("value");
+            try {
+                BasicDBObject stamp = (BasicDBObject) object;
+                total += (Double)stamp.get("value");
+            } catch (Exception e){
+                LOGGER.error(e);
+            }
         }
+        LOGGER.debug(total+"");
         BasicDBObject newDoc = new BasicDBObject();
         newDoc.put("timestamp",currentDate);
         newDoc.put("value",total/period.size());
