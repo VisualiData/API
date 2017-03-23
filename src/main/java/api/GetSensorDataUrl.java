@@ -12,7 +12,7 @@ import static spark.Spark.get;
  */
 public class GetSensorDataUrl implements IURL {
     public void OpenUrl(){
-        get("/sensor/:id", ( req, res) -> {
+        get("/sensor/:id/:from/:to", ( req, res) -> {
             if(req.contentType().equals("application/json")){
                 return Interact(req, res);
             }
@@ -22,6 +22,6 @@ public class GetSensorDataUrl implements IURL {
     }
     public JSONObject Interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
-        return sensorRoute.getSensorData(req.params(":id"));
+        return sensorRoute.getSensorData(req.params(":id"),req.params(":from"),req.params(":to"));
     }
 }
