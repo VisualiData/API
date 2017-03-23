@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateTimeUtil {
-    private DateTimeUtil(){};
+    private DateTimeUtil(){}
 
     public static String getTimeStamp(){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
