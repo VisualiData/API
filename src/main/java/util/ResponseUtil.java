@@ -41,12 +41,12 @@ public final class ResponseUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static String generateFailed(String message, int statuscode){
+    public static JSONObject generateFailed(String message, int statuscode){
         JSONObject output = new JSONObject();
         output.put(MESSAGE, message);
         output.put(STATUS, "error");
         output.put(STATUSCODE, statuscode);
         output.put("data", new JSONArray());
-        return output.toJSONString();
+        return output;
     }
 }

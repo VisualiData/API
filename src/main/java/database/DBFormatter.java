@@ -15,10 +15,17 @@ import java.util.TimeZone;
  */
 public class DBFormatter {
     private DBConnector connector = DBConnector.getInstance();
-    public void formatDB(String timeframe, String newTimeframe){
-        SensorsRoute sensorRoute = new SensorsRoute();
-        JSONArray allSensors = sensorRoute.getAllSensors();
-        formatCollection("name", timeframe, newTimeframe);
+    public boolean formatDB(String timeframe, String newTimeframe){
+        try{
+            SensorsRoute sensorRoute = new SensorsRoute();
+            JSONArray allSensors = sensorRoute.getAllSensors();
+            for (Object collectionName : allSensors){
+                formatCollection((String)collectionName, timeframe, newTimeframe);
+            }
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     private void  formatCollection(String collectionName, String timeframe, String newTimeframe){
@@ -30,8 +37,8 @@ public class DBFormatter {
         whereQuery.put("timestamp", new BasicDBObject("$gt",lastDate));
         JSONArray period = connector.findQuery(collectionName,whereQuery);
         int total = 0;
-        for (int i = 0; i < period.size(); i++) {
-            JSONObject stamp = (JSONObject)period.get(i);
+        for (Object object : period) {
+            JSONObject stamp = (JSONObject)object;
             total += (int)stamp.get("value");
         }
         BasicDBObject newDoc = new BasicDBObject();
