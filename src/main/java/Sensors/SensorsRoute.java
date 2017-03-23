@@ -21,7 +21,7 @@ public class SensorsRoute {
         // bouw die shit om
         return connector.Delete("");
     }
-    public JSONObject GetAllSensors(JSONObject reqBody){
+    public JSONObject GetAllSensors(){
         return connector.Read("");
     }
 }

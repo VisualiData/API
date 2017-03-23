@@ -22,6 +22,7 @@ public class Application{
         for (IURL url : addUrls){
             url.OpenUrl();
         }
+
     }
 
     public void stop(){
