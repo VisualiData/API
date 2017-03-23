@@ -30,7 +30,7 @@ public class DBConnector {
         MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder();
             optionsBuilder.serverSelectionTimeout(1000);
             optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
-        ServerAddress address = new ServerAddress(mongodbHost, 27018);
+        ServerAddress address = new ServerAddress(mongodbHost, 27017);
         MongoCredential credential = null;
         try {
             credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
