@@ -15,8 +15,10 @@ public class SensorDataRoute {
     public JSONObject getSensorData(String SensorID,String from,String to) {
         // bouw die shit om
         BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put("timestamp", new BasicDBObject("$lt",from));
-        whereQuery.put("timestamp", new BasicDBObject("$gt",to));
+        BasicDBObject conditions = new BasicDBObject();
+        conditions.put("$lt",to);
+        conditions.put("$gt",from);
+        whereQuery.put("timestamp", conditions);
         long diffrence = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
         if(diffrence <= 1000 * 3600 * 2){
             whereQuery.put("timeframe", "frame");
