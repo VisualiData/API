@@ -23,7 +23,7 @@ public class SensorsRoute {
         // bouw die shit om
         return connector.Delete("");
     }
-    public JSONArray getAllSensors(JSONObject reqBody){
+    public JSONArray getAllSensors(){
         return connector.getAllSensors();
     }
 }

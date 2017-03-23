@@ -21,6 +21,6 @@ public class GetAllSensorsUrl implements IURL {
     public JSONObject Interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
         JSONObject requestBody = new JSONObject();
-        return ResponseUtil.generateSuccess(sensorRoute.getAllSensors(requestBody));
+        return ResponseUtil.generateSuccess(sensorRoute.getAllSensors());
     }
 }
