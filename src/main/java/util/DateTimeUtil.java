@@ -1,5 +1,9 @@
 package util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import sensors.SensorDataRoute;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,6 +12,7 @@ import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class DateTimeUtil {
+    private static final Logger LOGGER = LogManager.getLogger(DateTimeUtil.class);
     private DateTimeUtil(){}
 
     public static String getTimeStamp(){
@@ -16,7 +21,7 @@ public class DateTimeUtil {
         return df.format(new Date(System.currentTimeMillis()));
     }
 
-    public static String GetDate(String timeFrame, boolean current){
+    public static String getDate(String timeFrame, boolean current){
         String format = "yyyy-MM-dd'T'00:00:00.00ZZ";
         int quarterAdjustment = 0;
         if ("frame".equals(timeFrame)) {
@@ -46,11 +51,12 @@ public class DateTimeUtil {
         return df.format(new Date(System.currentTimeMillis() - 3600 * 250 * quarterAdjustment));
     }
     public static long getDateDiff(String date1, String date2, TimeUnit timeUnit) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSZZ");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         long diffInMillies;
         try{
             diffInMillies = format.parse(date2).getTime() - format.parse(date1).getTime();
         }catch (ParseException e){
+            LOGGER.error(e);
             diffInMillies = 0;
         }
         return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);

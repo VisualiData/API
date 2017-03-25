@@ -5,14 +5,7 @@ import org.apache.logging.log4j.Logger;
 import sensors.SensorsRoute;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import util.DateTimeUtil;
-import util.ResponseUtil;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Created by Gebruiker on 20-3-2017.
@@ -37,12 +30,12 @@ public class DBFormatter {
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
         whereQuery.put("timeframe", timeframe);
-        String currentDate = DateTimeUtil.GetDate(timeframe, true);
-        String lastDate = DateTimeUtil.GetDate(timeframe, false);
+        String currentDate = DateTimeUtil.getDate(timeframe, true);
+        String lastDate = DateTimeUtil.getDate(timeframe, false);
         conditions.put("$lt",currentDate);
         conditions.put("$gt",lastDate);
         whereQuery.put("timestamp", conditions);
-        JSONArray period = connector.findQuery(collectionName,whereQuery);
+        JSONArray period = connector.findQuery(collectionName,whereQuery, new BasicDBObject());
         LOGGER.debug(whereQuery.toString());
         LOGGER.debug(period.size());
 

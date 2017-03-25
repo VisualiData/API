@@ -1,9 +1,11 @@
 package api;
 
+import org.json.simple.JSONArray;
 import sensors.SensorDataRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.ResponseUtil;
 
 import static spark.Spark.get;
 
@@ -12,16 +14,11 @@ import static spark.Spark.get;
  */
 public class GetSensorDataUrl implements IURL {
     public void OpenUrl(){
-        get("/sensor/:id/:from/:to", ( req, res) -> {
-            if(req.contentType().equals("application/json")){
-                return Interact(req, res);
-            }
-            System.out.println("not json");
-            return "Send Json";
-        });
+        get("/sensor/:id/:from/:to", this::Interact);
     }
     public JSONObject Interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
-        return sensorRoute.getSensorData(req.params(":id"),req.params(":from"),req.params(":to"));
+        JSONArray result = sensorRoute.getSensorData(req.params(":id"),req.params(":from"),req.params(":to"));
+        return ResponseUtil.generateSuccess(result);
     }
 }

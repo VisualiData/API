@@ -88,10 +88,11 @@ public class DBConnector {
     }
 
     @SuppressWarnings("unchecked")
-    public JSONArray findQuery(String collectionName, BasicDBObject whereQuery){
+    public JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find(whereQuery)){
+//        collection.find(whereQuery).projection(fields)
+        for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
             result.add(document);
         }
         return result;
