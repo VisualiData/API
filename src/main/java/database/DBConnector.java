@@ -9,11 +9,12 @@ import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.Arrays;
+import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class DBConnector {
     private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
-    private static DBConnector ourInstance = new DBConnector();
+    private static final DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
     public static DBConnector getInstance() {
@@ -32,10 +33,9 @@ public class DBConnector {
             optionsBuilder.serverSelectionTimeout(1000);
             optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
         ServerAddress address = new ServerAddress(mongodbHost, 27017);
-        MongoCredential credential = null;
         try {
-            credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
-            client = new MongoClient(address, Arrays.asList(credential), optionsBuilder.build());
+            MongoCredential credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+            client = new MongoClient(address, Collections.singletonList(credential), optionsBuilder.build());
         }catch (NullPointerException e){
             LOGGER.error("Username or password not defined in environment variables");
             LOGGER.error(e);
@@ -52,13 +52,7 @@ public class DBConnector {
         db = client.getDatabase("visualidata");
     }
 
-    // Close db connection
-    public static void close(){
-        client.close();
-    }
-
     // Insert single document
-    @SuppressWarnings("unchecked")
     public JSONObject insert(String collectionName, BasicDBObject document){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONObject result = new JSONObject();
@@ -75,7 +69,6 @@ public class DBConnector {
     }
 
     // Find document by specific value
-    @SuppressWarnings("unchecked")
     public JSONArray find(String collectionName, String key, String value){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         BasicDBObject whereQuery = new BasicDBObject();
@@ -87,7 +80,6 @@ public class DBConnector {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
@@ -121,15 +113,17 @@ public class DBConnector {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    /* TODO sort result */
+    // Get sensors for which a collection exists and sort the result
     public JSONArray getAllSensors(){
-        JSONArray result = new JSONArray();
+        List<String> sensors = new ArrayList<>();
         for(String collectionName: db.listCollectionNames()){
             if(!"sensordata".equals(collectionName)) {
-                result.add(collectionName);
+                sensors.add(collectionName);
             }
         }
+        Collections.sort(sensors);
+        JSONArray result = new JSONArray();
+        result.addAll(sensors);
         return result;
     }
 }
