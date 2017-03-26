@@ -10,18 +10,16 @@ import org.json.simple.JSONObject;
  */
 public class SensorsRoute {
     DBConnector connector = DBConnector.getInstance();
-    public JSONObject AddSensor (BasicDBObject reqBody) {
-        JSONObject result = connector.insert(reqBody, "sensordata");
-//        return result;
-        return new JSONObject();
+    public JSONObject addSensor(BasicDBObject reqBody) {
+        return connector.insert(reqBody, "sensordata");
     }
-    public JSONObject UpdateSensor (JSONObject reqBody) {
-        // bouw die shit om
-        return connector.Update("",reqBody);
+    public JSONObject updateSensor(BasicDBObject reqBody) {
+        BasicDBObject find = new BasicDBObject();
+        find.append("sensorId", reqBody.get("sensorId"));
+        return connector.updateQuery("sensordata", find, reqBody);
     }
-    public JSONObject DeleteSensor (JSONObject reqBody) {
-        // bouw die shit om
-        return connector.Delete("");
+    public JSONObject deleteSensor(BasicDBObject reqBody) {
+        return connector.deleteQuery("sensordata", reqBody);
     }
     public JSONArray getAllSensors(){
         return connector.getAllSensors();

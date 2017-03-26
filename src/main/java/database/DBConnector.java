@@ -3,6 +3,7 @@ package database;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -98,6 +99,30 @@ public class DBConnector {
         return result;
     }
 
+    public JSONObject updateQuery(String collectionName, BasicDBObject find, BasicDBObject replace){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        BasicDBObject updateResult = collection.findOneAndUpdate(find, new BasicDBObject("$set", replace));
+        boolean updated = false;
+        if(updateResult != null) {
+            updated = true;
+        }
+        JSONObject result = new JSONObject();
+        result.put("success", updated);
+        return result;
+    }
+
+    public JSONObject deleteQuery(String collectionName, BasicDBObject find){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        DeleteResult deleteResult = collection.deleteOne(find);
+        boolean deleted = false;
+        if(deleteResult.getDeletedCount() > 0){
+            deleted = true;
+        }
+        JSONObject result = new JSONObject();
+        result.put("success", deleted);
+        return result;
+    }
+
     @SuppressWarnings("unchecked")
     /* TODO sort result */
     public JSONArray getAllSensors(){
@@ -108,12 +133,6 @@ public class DBConnector {
             }
         }
         return result;
-    }
-
-    /* TODO update */
-
-    public JSONObject Update (String key, JSONObject Value){
-        return new JSONObject();
     }
 
     public JSONObject Delete (String key){

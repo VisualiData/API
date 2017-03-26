@@ -20,6 +20,7 @@ public class Application{
         DBConnector.initDB();
         IURL[] addUrls = {
                 new AddSensorUrl(),
+                new UpdateSensorUrl(),
                 new DeleteSensorUrl(),
                 new GetAllSensorsUrl(),
                 new GetSensorDataUrl(),
