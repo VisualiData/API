@@ -69,12 +69,12 @@ public class DBConnector {
     }
 
     // Find document by specific value
-    public JSONArray find(String collectionName, String key, String value){
+    public JSONArray find(String collectionName, String key, String value, BasicDBObject fields){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put(key, value);
         JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find(whereQuery)){
+        for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
             result.add(document);
         }
         return result;
