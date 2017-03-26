@@ -42,7 +42,6 @@ public class DBConnector {
             client = new MongoClient(address, optionsBuilder.build());
         }
 
-
         try{
             client.getConnectPoint();
             LOGGER.debug("Connected to db");
@@ -60,7 +59,7 @@ public class DBConnector {
 
     // Insert single document
     @SuppressWarnings("unchecked")
-    public JSONObject insert(BasicDBObject document, String collectionName){
+    public JSONObject insert(String collectionName, BasicDBObject document){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONObject result = new JSONObject();
         boolean inserted;
@@ -92,7 +91,6 @@ public class DBConnector {
     public JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-//        collection.find(whereQuery).projection(fields)
         for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
             result.add(document);
         }
@@ -133,9 +131,5 @@ public class DBConnector {
             }
         }
         return result;
-    }
-
-    public JSONObject Delete (String key){
-        return new JSONObject();
     }
 }

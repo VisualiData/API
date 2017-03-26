@@ -28,14 +28,10 @@ public class Application{
                 new FormatDataBaseUrl()
         };
         for (IURL url : addUrls){
-            url.OpenUrl();
+            url.openUrl();
         }
-        before((request, response) -> {
-            LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
-        });
-        after((request, response) -> {
-            response.type("application/json");
-        });
+        before((request, response) -> LOGGER.debug(request.requestMethod() + " request made to: " + request.uri()));
+        after((request, response) -> response.type("application/json"));
     }
 
     public void stop(){

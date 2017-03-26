@@ -14,7 +14,7 @@ public class SensorDataRoute {
     private static final Logger LOGGER = LogManager.getLogger(SensorDataRoute.class);
     private DBConnector connector = DBConnector.getInstance();
 
-    public JSONArray getSensorData(String SensorID,String from,String to) {
+    public JSONArray getSensorData(String sensorId,String from,String to) {
         // bouw die shit om
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
@@ -22,7 +22,6 @@ public class SensorDataRoute {
         conditions.put("$gt",from);
         whereQuery.put("timestamp", conditions);
         long diffrence = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
-        LOGGER.debug(Long.toString(diffrence));
         // less or equal than 2 hours
         if(diffrence <= 1000 * 3600 * 2){
             LOGGER.debug("frame");
@@ -54,12 +53,12 @@ public class SensorDataRoute {
         fields.put("_id", 0);
         fields.put("value", 1);
         fields.put("timestamp", 1);
-        return connector.findQuery(SensorID,whereQuery,fields);
+        return connector.findQuery(sensorId,whereQuery,fields);
     }
     public JSONObject insertSensorDummyData(BasicDBObject reqBody) {
-        return connector.insert(reqBody, reqBody.get("nodeName").toString());
+        return connector.insert(reqBody.get("nodeName").toString(), reqBody);
     }
     public JSONObject insertSensorData(BasicDBObject reqBody) {
-        return connector.insert(reqBody, reqBody.get("nodeName").toString());
+        return connector.insert(reqBody.get("nodeName").toString(), reqBody);
     }
 }

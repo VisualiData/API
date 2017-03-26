@@ -53,6 +53,6 @@ public class DBFormatter {
         newDoc.put("timestamp",currentDate);
         newDoc.put("value",total/period.size());
         newDoc.put("timeframe",newTimeframe);
-        connector.insert(newDoc,collectionName);
+        connector.insert(collectionName,newDoc);
     }
 }

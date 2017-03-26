@@ -16,10 +16,10 @@ import util.ResponseUtil;
  */
 public class AddSensorUrl implements IURL {
     @Override
-    public void OpenUrl(){
+    public void openUrl(){
         post("/sensor", (req, res) -> {
             if("application/json".equals(req.contentType())){
-                if((boolean) Interact(req, res).get("inserted")){
+                if((boolean) interact(req, res).get("inserted")){
                     return ResponseUtil.generateSuccessMessage("Sensor added");
                 }else {
                     return ResponseUtil.generateFailed("Sensor not added", 400);
@@ -29,7 +29,7 @@ public class AddSensorUrl implements IURL {
         });
     }
     @Override
-    public JSONObject Interact(Request req, Response res){
+    public JSONObject interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
         BasicDBObject requestBody = (BasicDBObject) JSON.parse(req.body());
         return sensorRoute.addSensor(requestBody);

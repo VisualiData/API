@@ -13,10 +13,13 @@ import static spark.Spark.get;
  * Created by Gebruiker on 13-3-2017.
  */
 public class GetSensorDataUrl implements IURL {
-    public void OpenUrl(){
-        get("/sensor/:id/:from/:to", this::Interact);
+    @Override
+    public void openUrl(){
+        get("/sensor/:id/:from/:to", this::interact);
     }
-    public JSONObject Interact(Request req, Response res){
+
+    @Override
+    public JSONObject interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
         JSONArray result = sensorRoute.getSensorData(req.params(":id"),req.params(":from"),req.params(":to"));
         return ResponseUtil.generateSuccess(result);

@@ -2,7 +2,6 @@ package util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sensors.SensorDataRoute;
 
 import java.text.DateFormat;
 import java.text.ParseException;
