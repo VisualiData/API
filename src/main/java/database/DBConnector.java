@@ -3,16 +3,18 @@ package database;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.Arrays;
+import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class DBConnector {
     private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
-    private static DBConnector ourInstance = new DBConnector();
+    private static final DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
     public static DBConnector getInstance() {
@@ -31,16 +33,14 @@ public class DBConnector {
             optionsBuilder.serverSelectionTimeout(1000);
             optionsBuilder.writeConcern(WriteConcern.ACKNOWLEDGED);
         ServerAddress address = new ServerAddress(mongodbHost, 27017);
-        MongoCredential credential = null;
         try {
-            credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
-            client = new MongoClient(address, Arrays.asList(credential), optionsBuilder.build());
+            MongoCredential credential = MongoCredential.createCredential(user, "admin", password.toCharArray());
+            client = new MongoClient(address, Collections.singletonList(credential), optionsBuilder.build());
         }catch (NullPointerException e){
             LOGGER.error("Username or password not defined in environment variables");
             LOGGER.error(e);
             client = new MongoClient(address, optionsBuilder.build());
         }
-
 
         try{
             client.getConnectPoint();
@@ -52,14 +52,8 @@ public class DBConnector {
         db = client.getDatabase("visualidata");
     }
 
-    // Close db connection
-    public static void close(){
-        client.close();
-    }
-
     // Insert single document
-    @SuppressWarnings("unchecked")
-    public JSONObject insert(BasicDBObject document, String collectionName){
+    public JSONObject insert(String collectionName, BasicDBObject document){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONObject result = new JSONObject();
         boolean inserted;
@@ -75,47 +69,61 @@ public class DBConnector {
     }
 
     // Find document by specific value
-    @SuppressWarnings("unchecked")
-    public JSONArray find(String collectionName, String key, String value){
+    public JSONArray find(String collectionName, String key, String value, BasicDBObject fields){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         BasicDBObject whereQuery = new BasicDBObject();
         whereQuery.put(key, value);
         JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find(whereQuery)){
+        for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
             result.add(document);
         }
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    public JSONArray findQuery(String collectionName, BasicDBObject whereQuery){
+    public JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields){
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find(whereQuery)){
+        for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
             result.add(document);
         }
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    /* TODO sort result */
-    public JSONArray getAllSensors(){
-        JSONArray result = new JSONArray();
-        for(String collectionName: db.listCollectionNames()){
-            if(!"sensordata".equals(collectionName)) {
-                result.add(collectionName);
-            }
+    public JSONObject updateQuery(String collectionName, BasicDBObject find, BasicDBObject replace){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        BasicDBObject updateResult = collection.findOneAndUpdate(find, new BasicDBObject("$set", replace));
+        boolean updated = false;
+        if(updateResult != null) {
+            updated = true;
         }
+        JSONObject result = new JSONObject();
+        result.put("success", updated);
         return result;
     }
 
-    /* TODO update */
-
-    public JSONObject Update (String key, JSONObject Value){
-        return new JSONObject();
+    public JSONObject deleteQuery(String collectionName, BasicDBObject find){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        DeleteResult deleteResult = collection.deleteOne(find);
+        boolean deleted = false;
+        if(deleteResult.getDeletedCount() > 0){
+            deleted = true;
+        }
+        JSONObject result = new JSONObject();
+        result.put("success", deleted);
+        return result;
     }
 
-    public JSONObject Delete (String key){
-        return new JSONObject();
+    // Get sensors for which a collection exists and sort the result
+    public JSONArray getAllSensors(){
+        List<String> sensors = new ArrayList<>();
+        for(String collectionName: db.listCollectionNames()){
+            if(!"sensordata".equals(collectionName)) {
+                sensors.add(collectionName);
+            }
+        }
+        Collections.sort(sensors);
+        JSONArray result = new JSONArray();
+        result.addAll(sensors);
+        return result;
     }
 }
