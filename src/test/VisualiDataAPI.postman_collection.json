@@ -1,0 +1,124 @@
+{
+	"variables": [],
+	"info": {
+		"name": "VisualiDataAPI",
+		"_postman_id": "ed1ae263-49a2-9137-28b4-7806d4331267",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{url}}/sensordata/dummy",
+			"request": {
+				"url": "{{url}}/sensordata/dummy",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"value\": 20.0, \"nodeName\": \"CHIBB-Node-1\", \"timestamp\": \"2017-03-23T00:03:00\", \"timeframe\": \"frame\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/sensors",
+			"request": {
+				"url": "{{url}}/sensors",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/sensor/CHIBB-Node-3/2017-03-24T13:00:00/2017-03-24T14:00:00",
+			"request": {
+				"url": "{{url}}/sensor/CHIBB-Node-3/2017-03-24T13:00:00/2017-03-24T14:00:00",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/sensor",
+			"request": {
+				"url": "{{url}}/sensor",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"sensorId\":\"CHIBB-Node-3\", \"type\":\"Temperature\", \"nodeName\":\"\", \"nodeType\":\"\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/sensor/update",
+			"request": {
+				"url": "{{url}}/sensor/update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"sensorId\":\"CHIBB-Node-3\", \"type\":\"Temperature\", \"nodeName\":\"Happy Plants Sensor Node 1\", \"nodeType\":\"Data Collection Node\", \"added\":\"yesterday\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/sensor",
+			"request": {
+				"url": "{{url}}/sensor",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"sensorId\":\"CHIBB-Node-3\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{url}}/sensor/CHIBB-Node-3",
+			"request": {
+				"url": "{{url}}/sensor/CHIBB-Node-3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

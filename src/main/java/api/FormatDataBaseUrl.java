@@ -12,12 +12,13 @@ import static spark.Spark.get;
  * Created by Gebruiker on 23-3-2017.
  */
 public class FormatDataBaseUrl implements IURL {
-    public void OpenUrl(){
-        get("/formatDB/:timeframe/:newtimeframe", (req, res) -> {
-            return Interact(req, res);
-        });
+    @Override
+    public void openUrl(){
+        get("/formatDB/:timeframe/:newtimeframe", this::interact);
     }
-    public JSONObject Interact(Request req, Response res){
+
+    @Override
+    public JSONObject interact(Request req, Response res){
         DBFormatter formatter = new DBFormatter();
         if (formatter.formatDB(req.params(":timeframe"),req.params("newtimeframe"))){
             return ResponseUtil.generateSuccessMessage("Data formatted");

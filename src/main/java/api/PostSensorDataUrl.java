@@ -16,10 +16,10 @@ import static spark.Spark.post;
  */
 public class PostSensorDataUrl implements IURL{
     @Override
-    public void OpenUrl(){
+    public void openUrl(){
         post("/sensordata", ( req, res) -> {
             if("application/json".equals(req.contentType())){
-                Interact(req, res);
+                interact(req, res);
                 return ResponseUtil.generateSuccessMessage("Data added");
             }
             return ResponseUtil.generateFailed("Send json format", 400);
@@ -38,7 +38,7 @@ public class PostSensorDataUrl implements IURL{
         });
     }
     @Override
-    public JSONObject Interact(Request req, Response res){
+    public JSONObject interact(Request req, Response res){
         SensorDataRoute sensorDataRoute = new SensorDataRoute();
         BasicDBObject requestBody = (BasicDBObject) JSON.parse(req.body());
         requestBody.append("timestamp", DateTimeUtil.getTimeStamp());
