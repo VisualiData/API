@@ -8,10 +8,11 @@ import requests
 import time
 
 startDate = "2017-03-24 12:00:00"
-averagetemp = 21
+averagetemp = 50
 hoursToGenerate = 24
-url = "http://192.168.0.18:4567/sensordata/dummy"
-nodeName = "CHIBB-Node-3"
+url = "http://localhost:4567/sensordata/dummy"
+nodeName = "CHIBB-Node-4"
+sensorType = "Luchtvochtigheid"
 
 def post_data(data):
     headers = {"Content-Type": "application/json"}
@@ -38,6 +39,7 @@ def generateData(timeframe, increaseBy):
         response["timestamp"] = str(timestamp)
         response["timeframe"] = timeframe
         response["nodeName"] = nodeName
+        response["type"] = sensorType
         post_data(response)
         current_time = current_time + increaseBy
 

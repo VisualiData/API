@@ -14,6 +14,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class DBConnector {
     private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
+    private static final String DB_NAME = "visualidata";
     private static final DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
@@ -49,7 +50,7 @@ public class DBConnector {
             LOGGER.error("Could not connect to db");
             LOGGER.error(e);
         }
-        db = client.getDatabase("visualidata");
+        db = client.getDatabase(DB_NAME);
     }
 
     // Insert single document
@@ -113,11 +114,21 @@ public class DBConnector {
         return result;
     }
 
+    public boolean checkAuthorized(String key){
+        JSONArray result = find("auth_keys", "key", key, new BasicDBObject());
+        return result.size() == 1;
+    }
+
+    public static void renameCollection(String collectionName, String newCollectionName){
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        collection.renameCollection(new MongoNamespace(DB_NAME, newCollectionName));
+    }
+
     // Get sensors for which a collection exists and sort the result
     public JSONArray getAllSensors(){
         List<String> sensors = new ArrayList<>();
         for(String collectionName: db.listCollectionNames()){
-            if(!"sensordata".equals(collectionName)) {
+            if(!"sensordata".equals(collectionName) && !"auth_keys".equals(collectionName)) {
                 sensors.add(collectionName);
             }
         }

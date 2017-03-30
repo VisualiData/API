@@ -2,41 +2,84 @@
 	"variables": [],
 	"info": {
 		"name": "VisualiDataAPI",
-		"_postman_id": "ed1ae263-49a2-9137-28b4-7806d4331267",
+		"_postman_id": "ba9b10d0-35c6-1583-61cd-eb88a969e218",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "{{url}}/sensordata/dummy",
-			"request": {
-				"url": "{{url}}/sensordata/dummy",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
+			"name": "tests",
+			"description": "",
+			"item": [
+				{
+					"name": "Unauthorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 401\"] = responseCode.code === 401;",
+									"tests[\"message says Not Authorized\"] = jsonData.message === \"Not authorized\";",
+									"tests[\"Status code in response is 401\"] = jsonData.statuscode === 401;",
+									"tests[\"Status of response is error\"] = jsonData.status === \"error\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensors",
+						"method": "GET",
+						"header": [],
+						"body": {},
 						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"value\": 20.0, \"nodeName\": \"CHIBB-Node-1\", \"timestamp\": \"2017-03-23T00:03:00\", \"timeframe\": \"frame\"}"
+					},
+					"response": []
 				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/sensors",
-			"request": {
-				"url": "{{url}}/sensors",
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"description": ""
-			},
-			"response": []
+				{
+					"name": "Add sensor data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"message says Data added\"] = jsonData.message === \"Data added\";",
+									"tests[\"Status code in response is 202\"] = jsonData.statuscode === 202;",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensordata/dummy",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "henk",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"value\": 20.0, \"nodeName\": \"CHIBB-Node-1\", \"timestamp\": \"2017-03-23T00:01:00\", \"timeframe\": \"frame\", \"type\":\"Temperature\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "{{url}}/sensor/CHIBB-Node-3/2017-03-24T13:00:00/2017-03-24T14:00:00",
@@ -44,7 +87,10 @@
 				"url": "{{url}}/sensor/CHIBB-Node-3/2017-03-24T13:00:00/2017-03-24T14:00:00",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -115,7 +161,10 @@
 				"url": "{{url}}/sensor/CHIBB-Node-3",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []

@@ -4,6 +4,7 @@ import database.DBFormatter;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.ResponseCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.get;
@@ -21,7 +22,7 @@ public class FormatDataBaseUrl implements IURL {
     public JSONObject interact(Request req, Response res){
         DBFormatter formatter = new DBFormatter();
         if (formatter.formatDB(req.params(":timeframe"),req.params("newtimeframe"))){
-            return ResponseUtil.generateSuccessMessage("Data formatted");
+            return ResponseUtil.generateSuccessMessage("Data formatted", ResponseCodes.SUCCESS);
         }else{
             return ResponseUtil.generateFailed("Data not formatted",400);
         }
