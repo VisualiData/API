@@ -120,7 +120,6 @@ public class DBConnector {
     }
 
     public static void renameCollection(String collectionName, String newCollectionName){
-        LOGGER.debug("rename " + collectionName + " to " + newCollectionName);
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         collection.renameCollection(new MongoNamespace(DB_NAME, newCollectionName));
     }
