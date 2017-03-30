@@ -16,6 +16,11 @@ public class GetSensorURL implements IURL{
     @Override
     public JSONObject interact(Request req, Response res) {
         SensorsRoute sensorsRoute = new SensorsRoute();
-        return ResponseUtil.generateSuccess(sensorsRoute.getSensor(req.params("id")), ResponseCodes.SUCCESS);
+        JSONObject result = sensorsRoute.getSensor(req.params("id"));
+        if (result != null) {
+            return ResponseUtil.generateSuccess(result, ResponseCodes.SUCCESS);
+        }else{
+            return ResponseUtil.generateFailed("Sensor not found", ResponseCodes.NOT_FOUND);
+        }
     }
 }

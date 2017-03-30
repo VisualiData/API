@@ -9,11 +9,11 @@ import org.json.simple.JSONObject;
  * Created by Gebruiker on 13-3-2017.
  */
 public class SensorsRoute {
-    private static final String SENSORDATA = "sensordata";
-    DBConnector connector = DBConnector.getInstance();
+    private static final String SENSOR_DATA = "sensordata";
+    private DBConnector connector = DBConnector.getInstance();
 
     public JSONObject addSensor(BasicDBObject reqBody) {
-        return connector.insert(SENSORDATA, reqBody);
+        return connector.insert(SENSOR_DATA, reqBody);
     }
 
     public JSONObject getSensor(String sensorId){
@@ -25,18 +25,18 @@ public class SensorsRoute {
             sensor.putAll(document);
             return sensor;
         }else{
-            return new JSONObject();
+            return null;
         }
     }
 
     public JSONObject updateSensor(BasicDBObject reqBody) {
         BasicDBObject find = new BasicDBObject();
         find.append("sensorId", reqBody.get("sensorId"));
-        return connector.updateQuery(SENSORDATA, find, reqBody);
+        return connector.updateQuery(SENSOR_DATA, find, reqBody);
     }
 
     public JSONObject deleteSensor(BasicDBObject reqBody) {
-        return connector.deleteQuery(SENSORDATA, reqBody);
+        return connector.deleteQuery(SENSOR_DATA, reqBody);
     }
 
     public JSONArray getAllSensors(){
