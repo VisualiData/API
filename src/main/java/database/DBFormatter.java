@@ -2,6 +2,7 @@ package database;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 import sensors.SensorsRoute;
 import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
@@ -18,7 +19,11 @@ public class DBFormatter {
             SensorsRoute sensorRoute = new SensorsRoute();
             JSONArray allSensors = sensorRoute.getAllSensors();
             for (Object collectionName : allSensors){
-                formatCollection((String)collectionName, timeframe, newTimeframe);
+                JSONObject sensor = sensorRoute.getSensor((String)collectionName);
+                JSONArray types = (JSONArray)sensor.get("types");
+                for (Object type : types) {
+                    formatCollection((String) collectionName, timeframe, newTimeframe, (String) type);
+                }
             }
             return true;
         }catch (Exception e){
@@ -26,7 +31,7 @@ public class DBFormatter {
         }
     }
 
-    private void  formatCollection(String collectionName, String timeframe, String newTimeframe){
+    private void  formatCollection(String collectionName, String timeframe, String newTimeframe, String dataType){
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
         whereQuery.put("timeframe", timeframe);
@@ -35,6 +40,7 @@ public class DBFormatter {
         conditions.put("$lt",currentDate);
         conditions.put("$gt",lastDate);
         whereQuery.put("timestamp", conditions);
+        whereQuery.put("type", dataType);
         JSONArray period = connector.findQuery(collectionName,whereQuery, new BasicDBObject());
         LOGGER.debug(whereQuery.toString());
         LOGGER.debug(period.size());
