@@ -32,19 +32,7 @@ public class DBFormatter {
     }
 
     private void  formatCollection(String collectionName, String timeframe, String newTimeframe, String dataType){
-        BasicDBObject whereQuery = new BasicDBObject();
-        BasicDBObject conditions = new BasicDBObject();
-        whereQuery.put("timeframe", timeframe);
-        String currentDate = DateTimeUtil.getDate(timeframe, true);
-        String lastDate = DateTimeUtil.getDate(timeframe, false);
-        conditions.put("$lt",currentDate);
-        conditions.put("$gt",lastDate);
-        whereQuery.put("timestamp", conditions);
-        whereQuery.put("type", dataType);
-        JSONArray period = connector.findQuery(collectionName,whereQuery, new BasicDBObject());
-        LOGGER.debug(whereQuery.toString());
-        LOGGER.debug(period.size());
-
+        JSONArray period = getCollection(timeframe,dataType,collectionName);
         Double total = 0.00;
         for (Object object : period) {
             try {
@@ -54,11 +42,24 @@ public class DBFormatter {
                 LOGGER.error(e);
             }
         }
-        LOGGER.debug(total+"");
         BasicDBObject newDoc = new BasicDBObject();
+        String currentDate = DateTimeUtil.getDate(timeframe, true);
         newDoc.put("timestamp",currentDate);
         newDoc.put("value",total/period.size());
         newDoc.put("timeframe",newTimeframe);
         connector.insert(collectionName,newDoc);
+    }
+
+    private JSONArray getCollection(String timeframe, String dataType, String collectionName){
+        BasicDBObject whereQuery = new BasicDBObject();
+        BasicDBObject conditions = new BasicDBObject();
+        whereQuery.put("timeframe", timeframe);
+        String currentDate = DateTimeUtil.getDate(timeframe, true);
+        String lastDate = DateTimeUtil.getDate(timeframe, false);
+        conditions.put("$lt",currentDate);
+        conditions.put("$gt",lastDate);
+        whereQuery.put("timestamp", conditions);
+        whereQuery.put("type", dataType);
+        return connector.findQuery(collectionName,whereQuery, new BasicDBObject());
     }
 }
