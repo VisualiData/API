@@ -9,6 +9,7 @@ import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.ResponseCodes;
 import util.ResponseUtil;
 
 public class UpdateSensorUrl implements IURL {
@@ -18,7 +19,7 @@ public class UpdateSensorUrl implements IURL {
         post("/sensor/update", (req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("success")){
-                    return ResponseUtil.generateSuccessMessage("Sensor updated");
+                    return ResponseUtil.generateSuccessMessage("Sensor updated", ResponseCodes.SUCCESS);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not updated", 400);
                 }

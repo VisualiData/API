@@ -6,6 +6,7 @@ import sensors.SensorsRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.ResponseCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.delete;
@@ -19,7 +20,7 @@ public class DeleteSensorUrl implements IURL {
         delete("/sensor", ( req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("success")){
-                    return ResponseUtil.generateSuccessMessage("Sensor deleted");
+                    return ResponseUtil.generateSuccessMessage("Sensor deleted", ResponseCodes.SUCCESS);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not deleted", 400);
                 }
