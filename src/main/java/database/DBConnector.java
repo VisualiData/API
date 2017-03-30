@@ -113,11 +113,16 @@ public class DBConnector {
         return result;
     }
 
+    public boolean checkAuthorized(String key){
+        JSONArray result = find("auth_keys", "key", key, new BasicDBObject());
+        return result.size() == 1;
+    }
+
     // Get sensors for which a collection exists and sort the result
     public JSONArray getAllSensors(){
         List<String> sensors = new ArrayList<>();
         for(String collectionName: db.listCollectionNames()){
-            if(!"sensordata".equals(collectionName)) {
+            if(!"sensordata".equals(collectionName) && !"auth_keys".equals(collectionName)) {
                 sensors.add(collectionName);
             }
         }
