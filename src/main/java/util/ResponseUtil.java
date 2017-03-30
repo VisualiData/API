@@ -11,41 +11,41 @@ public final class ResponseUtil {
     private ResponseUtil(){}
 
     @SuppressWarnings("unchecked")
-    public static JSONObject generateSuccess(JSONArray data){
+    public static JSONObject generateSuccess(JSONArray data, int statusCode){
         JSONObject output = new JSONObject();
         output.put(MESSAGE, "");
         output.put(STATUS, "success");
-        output.put(STATUSCODE, 200);
+        output.put(STATUSCODE, statusCode);
         output.put("data", data);
         return output;
     }
 
     @SuppressWarnings("unchecked")
-    public static JSONObject generateSuccess(JSONObject data){
+    public static JSONObject generateSuccess(JSONObject data, int statusCode){
         JSONObject output = new JSONObject();
         output.put(MESSAGE, "");
         output.put(STATUS, "success");
-        output.put(STATUSCODE, 200);
+        output.put(STATUSCODE, statusCode);
         output.put("data", data);
         return output;
     }
 
     @SuppressWarnings("unchecked")
-    public static JSONObject generateSuccessMessage(String message){
+    public static JSONObject generateSuccessMessage(String message, int statusCode){
         JSONObject output = new JSONObject();
-        output.put(MESSAGE, "");
-        output.put(STATUS, message);
-        output.put(STATUSCODE, 200);
+        output.put(MESSAGE, message);
+        output.put(STATUS, "success");
+        output.put(STATUSCODE, statusCode);
         output.put("data", new JSONArray());
         return output;
     }
 
     @SuppressWarnings("unchecked")
-    public static JSONObject generateFailed(String message, int statuscode){
+    public static JSONObject generateFailed(String message, int statusCode){
         JSONObject output = new JSONObject();
         output.put(MESSAGE, message);
         output.put(STATUS, "error");
-        output.put(STATUSCODE, statuscode);
+        output.put(STATUSCODE, statusCode);
         output.put("data", new JSONArray());
         return output;
     }

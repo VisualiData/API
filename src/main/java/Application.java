@@ -6,6 +6,7 @@ import api.*;
 import database.DBConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import spark.Request;
 import util.ResponseUtil;
 
 import static spark.Spark.*;
@@ -35,7 +36,13 @@ public class Application{
             url.openUrl();
         }
         errorHandling();
-        before((request, response) -> LOGGER.debug(request.requestMethod() + " request made to: " + request.uri()));
+        before((request, response) -> {
+            LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
+            if(!authenticated(request)){
+                response.type("application/json");
+                halt(401, ResponseUtil.generateFailed("Not authorized", 401).toString());
+            }
+        });
         after((request, response) -> response.type("application/json"));
     }
 
@@ -43,5 +50,9 @@ public class Application{
     private static void errorHandling(){
         notFound(ResponseUtil.generateFailed("Not Found", 404).toJSONString());
         internalServerError(ResponseUtil.generateFailed("Internal server error", 500).toJSONString());
+    }
+
+    private static boolean authenticated(Request request) {
+        return request.headers("Authorization") != null && DBConnector.getInstance().checkAuthorized(request.headers("Authorization"));
     }
 }

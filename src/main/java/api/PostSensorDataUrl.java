@@ -7,6 +7,7 @@ import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
 import util.DateTimeUtil;
+import util.ResponseCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.post;
@@ -20,7 +21,7 @@ public class PostSensorDataUrl implements IURL{
         post("/sensordata", ( req, res) -> {
             if("application/json".equals(req.contentType())){
                 interact(req, res);
-                return ResponseUtil.generateSuccessMessage("Data added");
+                return ResponseUtil.generateSuccessMessage("Data added", ResponseCodes.ACCEPTED);
             }
             return ResponseUtil.generateFailed("Send json format", 400);
         });
@@ -29,7 +30,7 @@ public class PostSensorDataUrl implements IURL{
         post("/sensordata/dummy", (req,res) ->{
             if("application/json".equals(req.contentType())){
                 if(interactDummy(req)) {
-                    return ResponseUtil.generateSuccessMessage("Data added");
+                    return ResponseUtil.generateSuccessMessage("Data added", ResponseCodes.ACCEPTED);
                 }else{
                     return ResponseUtil.generateFailed("Data not added", 400);
                 }

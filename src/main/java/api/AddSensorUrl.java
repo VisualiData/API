@@ -9,6 +9,7 @@ import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
+import util.ResponseCodes;
 import util.ResponseUtil;
 
 /**
@@ -20,7 +21,7 @@ public class AddSensorUrl implements IURL {
         post("/sensor", (req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("inserted")){
-                    return ResponseUtil.generateSuccessMessage("Sensor added");
+                    return ResponseUtil.generateSuccessMessage("Sensor added", ResponseCodes.CREATED);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not added", 400);
                 }
