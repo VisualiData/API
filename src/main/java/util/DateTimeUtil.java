@@ -31,9 +31,6 @@ public class DateTimeUtil {
         }
         if(!current){
             switch (timeFrame){
-                case "frame":
-                    quarterAdjustment = 1;
-                    break;
                 case "quarter":
                     quarterAdjustment = 4;
                     break;
@@ -42,6 +39,9 @@ public class DateTimeUtil {
                     break;
                 case "day" :
                     quarterAdjustment = 672;
+                    break;
+                default:
+                    quarterAdjustment = 1;
                     break;
             }
         }

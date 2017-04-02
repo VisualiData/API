@@ -126,9 +126,10 @@ public class DBConnector {
 
     // Get sensors for which a collection exists and sort the result
     public JSONArray getAllSensors(){
+        final String[] exclude = new String[]{"sensordata", "auth_keys"};
         List<String> sensors = new ArrayList<>();
         for(String collectionName: db.listCollectionNames()){
-            if(!"sensordata".equals(collectionName) && !"auth_keys".equals(collectionName)) {
+            if(!Arrays.asList(exclude).contains(collectionName)){
                 sensors.add(collectionName);
             }
         }

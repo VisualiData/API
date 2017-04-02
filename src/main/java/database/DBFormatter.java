@@ -27,6 +27,7 @@ public class DBFormatter {
             }
             return true;
         }catch (Exception e){
+            LOGGER.error(e);
             return false;
         }
     }
