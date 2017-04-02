@@ -16,6 +16,7 @@ public class Application{
     private Application(){}
 
     public static void main (String[] args){
+        staticFiles.location("/public");
         init();
         start();
     }

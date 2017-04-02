@@ -13,6 +13,14 @@ import static spark.Spark.get;
  * Created by Gebruiker on 23-3-2017.
  */
 public class FormatDataBaseUrl implements IURL {
+    /**
+     * @api {get} /formatDB/:timeframe/:newtimeframe Start formatting of db values
+     * @apiName FormatDb
+     * @apiGroup Data
+     *
+     * @apiParam {String} timeframe from timeframe.
+     * @apiParam {String} newtimeframe to timeframe
+     */
     @Override
     public void openUrl(){
         get("/formatDB/:timeframe/:newtimeframe", this::interact);

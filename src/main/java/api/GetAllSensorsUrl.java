@@ -10,7 +10,11 @@ import util.ResponseUtil;
 import static spark.Spark.get;
 
 public class GetAllSensorsUrl implements IURL {
-
+    /**
+     * @api {get} /sensors Request All Sensors
+     * @apiName GetAllSensors
+     * @apiGroup Sensor
+     */
     @Override
     public void openUrl(){
         get("/sensors", this::interact);
