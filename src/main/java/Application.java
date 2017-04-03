@@ -44,7 +44,12 @@ public class Application{
                 halt(401, ResponseUtil.generateFailed("Not authorized", 401).toString());
             }
         });
-        after((request, response) -> response.type("application/json"));
+        after((request, response) -> {
+            response.type("application/json");
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, DELETE");
+            response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+        });
     }
 
 
