@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+/*
+ * Class for DateTime methods
+ */
 public class DateTimeUtil {
     private static final Logger LOGGER = LogManager.getLogger(DateTimeUtil.class);
     private DateTimeUtil(){}
@@ -51,13 +54,13 @@ public class DateTimeUtil {
     }
     public static long getDateDiff(String date1, String date2, TimeUnit timeUnit) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        long diffInMillies;
+        long diffInMilliseconds;
         try{
-            diffInMillies = format.parse(date2).getTime() - format.parse(date1).getTime();
+            diffInMilliseconds = format.parse(date2).getTime() - format.parse(date1).getTime();
         }catch (ParseException e){
             LOGGER.error(e);
-            diffInMillies = 0;
+            diffInMilliseconds = 0;
         }
-        return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
+        return timeUnit.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
     }
 }

@@ -3,6 +3,19 @@ define({ "api": [
     "type": "get",
     "url": "/formatDB/:timeframe/:newtimeframe",
     "title": "Start formatting of db values",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "FormatDb",
     "group": "Data",
     "parameter": {
@@ -13,19 +26,19 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "timeframe",
-            "description": "<p>from timeframe.</p>"
+            "description": "<p>from time frame</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "newtimeframe",
-            "description": "<p>to timeframe</p>"
+            "description": "<p>to time frame</p>"
           }
         ]
       }
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/FormatDataBaseUrl.java",
     "groupTitle": "Data"
   },
@@ -33,6 +46,19 @@ define({ "api": [
     "type": "get",
     "url": "/sensor/:id/:from/:to/:type",
     "title": "Request Sensor data in time span",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "GetSensorData",
     "group": "Data",
     "parameter": {
@@ -63,13 +89,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "type",
-            "description": "<p>Frame type.</p>"
+            "field": "date",
+            "description": "<p>type e.g. Temperature</p>"
           }
         ]
       }
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/GetSensorDataUrl.java",
     "groupTitle": "Data"
   },
@@ -77,6 +103,19 @@ define({ "api": [
     "type": "post",
     "url": "/sensordata",
     "title": "Post Sensor data",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "PostData",
     "group": "Data",
     "success": {
@@ -88,7 +127,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/PostSensorDataUrl.java",
     "groupTitle": "Data"
   },
@@ -96,6 +135,19 @@ define({ "api": [
     "type": "post",
     "url": "/sensordata/dummy",
     "title": "Post dummy sensor data",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "PostDummyData",
     "group": "Data",
     "description": "<p>Post to this route does not add a timestamp unlike a post to /sensordata</p>",
@@ -108,7 +160,7 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/PostSensorDataUrl.java",
     "groupTitle": "Data"
   },
@@ -116,19 +168,68 @@ define({ "api": [
     "type": "post",
     "url": "/sensor",
     "title": "Add a sensor",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "AddSensor",
     "group": "Sensor",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/AddSensorUrl.java",
+    "groupTitle": "Sensor"
+  },
+  {
+    "type": "delete",
+    "url": "/sensor",
+    "title": "Archives a sensor",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "ArchiveSensor",
+    "group": "Sensor",
+    "version": "1.0.0",
+    "filename": "src/main/java/api/DeleteSensorUrl.java",
     "groupTitle": "Sensor"
   },
   {
     "type": "get",
     "url": "/sensors",
     "title": "Request All Sensors",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "GetAllSensors",
     "group": "Sensor",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/GetAllSensorsUrl.java",
     "groupTitle": "Sensor"
   },
@@ -136,8 +237,28 @@ define({ "api": [
     "type": "get",
     "url": "/sensor/:id",
     "title": "Request Sensor information",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
     "name": "GetSensor",
     "group": "Sensor",
+    "examples": [
+      {
+        "title": "Example url:",
+        "content": "https://api.visualidata.nl/sensor/CHIBB-Test-Node",
+        "type": "js"
+      }
+    ],
     "parameter": {
       "fields": {
         "Parameter": [
@@ -160,8 +281,31 @@ define({ "api": [
         }
       ]
     },
-    "version": "0.0.0",
+    "version": "1.0.0",
     "filename": "src/main/java/api/GetSensorURL.java",
+    "groupTitle": "Sensor"
+  },
+  {
+    "type": "post",
+    "url": "/sensor",
+    "title": "Update a sensor",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "UpdateSensor",
+    "group": "Sensor",
+    "version": "1.0.0",
+    "filename": "src/main/java/api/UpdateSensorUrl.java",
     "groupTitle": "Sensor"
   }
 ] });

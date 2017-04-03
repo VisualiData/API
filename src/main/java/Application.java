@@ -1,16 +1,16 @@
-/*
- * Main class for initializing API
- */
-
 import api.*;
 import database.DBConnector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Request;
+import util.ResponseCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.*;
 
+/*
+ * Main class for initializing API
+ */
 public class Application{
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
     private Application(){}
@@ -54,8 +54,8 @@ public class Application{
 
 
     private static void errorHandling(){
-        notFound(ResponseUtil.generateFailed("Not Found", 404).toJSONString());
-        internalServerError(ResponseUtil.generateFailed("Internal server error", 500).toJSONString());
+        notFound(ResponseUtil.generateFailed("Not Found", ResponseCodes.NOT_FOUND).toJSONString());
+        internalServerError(ResponseUtil.generateFailed("Internal server error", ResponseCodes.SERVER_ERROR).toJSONString());
     }
 
     private static boolean authenticated(Request request) {

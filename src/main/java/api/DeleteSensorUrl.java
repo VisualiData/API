@@ -16,6 +16,13 @@ import static spark.Spark.delete;
 public class DeleteSensorUrl implements IURL {
     private String sensorId = null;
 
+    /**
+     * @api {delete} /sensor Archives a sensor
+     * @apiHeader {String} Authorization Authorization key.
+     * @apiName ArchiveSensor
+     * @apiGroup Sensor
+     * @apiVersion 1.0.0
+     */
     @Override
     public void openUrl(){
         delete("/sensor", ( req, res) -> {

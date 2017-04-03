@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "VisualiDataAPI",
-		"_postman_id": "ba9b10d0-35c6-1583-61cd-eb88a969e218",
+		"_postman_id": "87799658-63e3-9038-2087-84cda73fc783",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -33,7 +33,10 @@
 						"url": "{{url}}/sensors",
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -67,7 +70,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "henk",
+								"value": "dev",
 								"description": ""
 							}
 						],
@@ -108,7 +111,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "henk",
+								"value": "dev",
 								"description": ""
 							}
 						],
@@ -145,7 +148,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "henk",
+								"value": "dev",
 								"description": ""
 							}
 						],
@@ -165,7 +168,7 @@
 									"var jsonData = JSON.parse(responseBody);",
 									"",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"tests[\"message says Data added\"] = jsonData.message === \"Sensor deleted\";",
+									"tests[\"message says Data added\"] = jsonData.message === \"Sensor archived\";",
 									"tests[\"Status code in response is 202\"] = jsonData.statuscode === 200;",
 									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";"
 								]
@@ -183,7 +186,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "henk",
+								"value": "dev",
 								"description": ""
 							}
 						],
@@ -220,7 +223,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "henk",
+								"value": "dev",
 								"description": ""
 							}
 						],
@@ -261,6 +264,40 @@
 					"mode": "raw",
 					"raw": "{\"sensorId\":\"CHIBB-Node-3\", \"type\":\"Temperature\", \"nodeName\":\"Happy Plants Sensor Node 1\", \"nodeType\":\"Data Collection Node\", \"added\":\"yesterday\"}"
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get all nodes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Status code in response is 200\"] = jsonData.statuscode === 404;",
+							"tests[\"Status of response is success\"] = jsonData.status === \"error\";",
+							"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"tests[\"Response not empty\"] = jsonData.data.length === 0;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/sensors",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "dev",
+						"description": ""
+					}
+				],
+				"body": {},
 				"description": ""
 			},
 			"response": []

@@ -13,13 +13,15 @@ import static spark.Spark.get;
 public class GetSensorDataUrl implements IURL {
     /**
      * @api {get} /sensor/:id/:from/:to/:type Request Sensor data in time span
+     * @apiHeader {String} Authorization Authorization key.
      * @apiName GetSensorData
      * @apiGroup Data
      *
      * @apiParam {String} id Sensor ID.
      * @apiParam {Date} from Start of time span.
      * @apiParam {Date} to End of time span
-     * @apiParam {String} type Frame type.
+     * @apiParam {String} date type e.g. Temperature
+     * @apiVersion 1.0.0
      */
     @Override
     public void openUrl(){

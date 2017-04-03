@@ -15,8 +15,10 @@ import util.ResponseUtil;
 public class AddSensorUrl implements IURL {
     /**
      * @api {post} /sensor Add a sensor
+     * @apiHeader {String} Authorization Authorization key.
      * @apiName AddSensor
      * @apiGroup Sensor
+     * @apiVersion 1.0.0
      */
     @Override
     public void openUrl(){

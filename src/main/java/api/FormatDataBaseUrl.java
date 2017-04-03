@@ -9,17 +9,16 @@ import util.ResponseUtil;
 
 import static spark.Spark.get;
 
-/**
- * Created by Gebruiker on 23-3-2017.
- */
 public class FormatDataBaseUrl implements IURL {
     /**
      * @api {get} /formatDB/:timeframe/:newtimeframe Start formatting of db values
+     * @apiHeader {String} Authorization Authorization key.
      * @apiName FormatDb
      * @apiGroup Data
      *
-     * @apiParam {String} timeframe from timeframe.
-     * @apiParam {String} newtimeframe to timeframe
+     * @apiParam {String} timeframe from time frame
+     * @apiParam {String} newtimeframe to time frame
+     * @apiVersion 1.0.0
      */
     @Override
     public void openUrl(){

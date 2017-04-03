@@ -4,30 +4,30 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Created by Gebruiker on 27-3-2017.
+ * Class for time frame methods
  */
 public class TimeFrameUtil {
     private static final Logger LOGGER = LogManager.getLogger(TimeFrameUtil.class);
     private TimeFrameUtil(){}
 
-    public static String getTimeFrame(long difference){
+    public static String getTimeFrame(long timeDifference){
         // less or equal than 2 hours
-        if(difference <= 1000 * 3600 * 2){
+        if(timeDifference <= 1000 * 3600 * 2){
             LOGGER.debug("frame");
             return "frame";
         }
         // between 2 and 10 hours
-        else if(difference > 1000 * 3600 * 2 && difference <= 1000 * 3600 * 10){
+        else if(timeDifference > 1000 * 3600 * 2 && timeDifference <= 1000 * 3600 * 10){
             LOGGER.debug("quarter");
             return "quarter";
         }
         // between 10 hours and 7 days
-        else if(difference > 1000 * 3600 * 10 && difference <= 1000 * 3600 * 24 * 7){
+        else if(timeDifference > 1000 * 3600 * 10 && timeDifference <= 1000 * 3600 * 24 * 7){
             LOGGER.debug("hour");
             return "hour";
         }
         // between a week and 4 weeks
-        else if(difference > 1000 * 3600 * 24 * 7 && difference <= 1000 * 3600 * 24 * 7 * 4){
+        else if(timeDifference > 1000 * 3600 * 24 * 7 && timeDifference <= 1000 * 3600 * 24 * 28){
             LOGGER.debug("day");
             return "day";
         }

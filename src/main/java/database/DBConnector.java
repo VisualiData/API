@@ -10,7 +10,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.*;
-
+/*TODO Rewrite to more files and include dbstate*/
 @SuppressWarnings("unchecked")
 public class DBConnector {
     private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
