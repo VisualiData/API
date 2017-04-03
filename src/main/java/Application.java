@@ -1,5 +1,7 @@
 import api.*;
 import database.DBConnector;
+import database.DBQuery;
+import database.DatabaseState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Request;
@@ -39,9 +41,13 @@ public class Application{
         errorHandling();
         before((request, response) -> {
             LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
-            if(!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))){
-                response.type("application/json");
-                halt(401, ResponseUtil.generateFailed("Not authorized", 401).toString());
+            if(DBConnector.getDBState() == DatabaseState.STATE_RUNNING){
+                if(!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))){
+                    response.type("application/json");
+                    halt(ResponseCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", ResponseCodes.NOT_AUTHORIZED).toJSONString());
+                }
+            } else {
+                halt(ResponseCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", ResponseCodes.SERVER_ERROR).toJSONString());
             }
         });
         after((request, response) -> {
@@ -59,6 +65,6 @@ public class Application{
     }
 
     private static boolean authenticated(Request request) {
-        return request.headers("Authorization") != null && DBConnector.getInstance().checkAuthorized(request.headers("Authorization"));
+        return request.headers("Authorization") != null && DBQuery.checkAuthorized(request.headers("Authorization"));
     }
 }

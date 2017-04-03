@@ -3,6 +3,7 @@ package api;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import database.DBConnector;
+import database.DBQuery;
 import sensors.SensorsRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
@@ -28,7 +29,7 @@ public class DeleteSensorUrl implements IURL {
         delete("/sensor", ( req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("success")){
-                    DBConnector.renameCollection(sensorId, sensorId + "_ARCHIVED_"+ DateTimeUtil.getTimeStamp());
+                    DBQuery.renameCollection(sensorId, sensorId + "_ARCHIVED_"+ DateTimeUtil.getTimeStamp());
                     return ResponseUtil.generateSuccessMessage("Sensor archived", ResponseCodes.SUCCESS);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not archived", 400);

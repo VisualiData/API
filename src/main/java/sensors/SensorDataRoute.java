@@ -2,6 +2,7 @@ package sensors;
 
 import database.DBConnector;
 import com.mongodb.BasicDBObject;
+import database.DBQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -30,13 +31,13 @@ public class SensorDataRoute {
         fields.put("_id", 0);
         fields.put("value", 1);
         fields.put("timestamp", 1);
-        return connector.findQuery(sensorId,whereQuery,fields);
+        return DBQuery.findQuery(sensorId,whereQuery,fields);
     }
 
     public JSONObject insertSensorDummyData(BasicDBObject reqBody) {
-        return connector.insert(reqBody.get("nodeName").toString(), reqBody);
+        return DBQuery.insert(reqBody.get("nodeName").toString(), reqBody);
     }
     public JSONObject insertSensorData(BasicDBObject reqBody) {
-        return connector.insert(reqBody.get("nodeName").toString(), reqBody);
+        return DBQuery.insert(reqBody.get("nodeName").toString(), reqBody);
     }
 }
