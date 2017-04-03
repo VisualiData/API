@@ -39,7 +39,7 @@ public class Application{
         errorHandling();
         before((request, response) -> {
             LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
-            if(!authenticated(request)){
+            if(!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))){
                 response.type("application/json");
                 halt(401, ResponseUtil.generateFailed("Not authorized", 401).toString());
             }
