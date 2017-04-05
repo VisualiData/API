@@ -2,7 +2,6 @@ package api;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
-import database.DBConnector;
 import database.DBQuery;
 import sensors.SensorsRoute;
 import org.json.simple.JSONObject;

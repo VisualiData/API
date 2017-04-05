@@ -1,13 +1,9 @@
 package database;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.*;
 /*TODO Rewrite to more files and include dbstate*/
@@ -18,7 +14,8 @@ public class DBConnector {
     private static MongoDatabase db;
     private static MongoClient client;
     private static DatabaseState state;
-    public static DBConnector getInstance() {
+
+    static DBConnector getInstance() {
         return ourInstance;
     }
 

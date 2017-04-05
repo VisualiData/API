@@ -1,6 +1,5 @@
 package sensors;
 
-import database.DBConnector;
 import com.mongodb.BasicDBObject;
 import database.DBQuery;
 import org.json.simple.JSONArray;
@@ -9,7 +8,6 @@ import org.json.simple.JSONObject;
 public class SensorsRoute {
     private static final String IDENTIFIER = "sensorId";
     private static final String SENSOR_DATA = "sensordata";
-    private DBConnector connector = DBConnector.getInstance();
 
     public JSONObject addSensor(BasicDBObject reqBody) {
         return DBQuery.insert(SENSOR_DATA, reqBody);

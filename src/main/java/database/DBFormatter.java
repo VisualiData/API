@@ -13,7 +13,6 @@ import util.DateTimeUtil;
  */
 public class DBFormatter {
     private static final Logger LOGGER = LogManager.getLogger(DBFormatter.class);
-    private DBConnector connector = DBConnector.getInstance();
     public boolean formatDB(String timeframe, String newTimeframe){
         try{
             SensorsRoute sensorRoute = new SensorsRoute();

@@ -1,6 +1,5 @@
 package sensors;
 
-import database.DBConnector;
 import com.mongodb.BasicDBObject;
 import database.DBQuery;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 public class SensorDataRoute {
     private static final Logger LOGGER = LogManager.getLogger(SensorDataRoute.class);
-    private DBConnector connector = DBConnector.getInstance();
 
     public JSONArray getSensorData(String sensorId,String from,String to, String dataType) {
         // bouw die shit om
