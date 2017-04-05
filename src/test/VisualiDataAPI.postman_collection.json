@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "VisualiDataAPI",
-		"_postman_id": "87799658-63e3-9038-2087-84cda73fc783",
+		"_postman_id": "cee64f2e-e7de-c44d-8a6f-5f513ef04528",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -70,7 +70,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "dev",
+								"value": "{{auth_key}}",
 								"description": ""
 							}
 						],
@@ -111,7 +111,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "dev",
+								"value": "{{auth_key}}",
 								"description": ""
 							}
 						],
@@ -148,7 +148,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "dev",
+								"value": "{{auth_key}}",
 								"description": ""
 							}
 						],
@@ -186,7 +186,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "dev",
+								"value": "{{auth_key}}",
 								"description": ""
 							}
 						],
@@ -223,7 +223,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "dev",
+								"value": "{{auth_key}}",
 								"description": ""
 							}
 						],
@@ -278,11 +278,11 @@
 						"exec": [
 							"var jsonData = JSON.parse(responseBody);",
 							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"tests[\"Status code in response is 200\"] = jsonData.statuscode === 404;",
-							"tests[\"Status of response is success\"] = jsonData.status === \"error\";",
+							"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+							"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
 							"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
 							"",
-							"tests[\"Response not empty\"] = jsonData.data.length === 0;"
+							"tests[\"Response not empty\"] = jsonData.data.length !== 0;"
 						]
 					}
 				}
@@ -293,7 +293,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "dev",
+						"value": "{{auth_key}}",
 						"description": ""
 					}
 				],
