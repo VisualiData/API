@@ -9,6 +9,8 @@ import org.json.simple.JSONObject;
 import util.DateTimeUtil;
 import util.TimeFrameUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SensorDataRoute {
@@ -40,8 +42,37 @@ public class SensorDataRoute {
     }
 
     private BasicDBObject createDocument (BasicDBObject reqBody){
-        BasicDBObject document = new BasicDBObject();
-        document = reqBody;
-        return document;
+        List<BasicDBObject> documents = new ArrayList<>();
+        JSONArray values = (JSONArray)reqBody.get("values");
+        String id = (String)reqBody.get("sensor_id");
+        for (Object value : values){
+            BasicDBObject document = new BasicDBObject();
+            document.put("nodeName",id);
+            document.put("timeframe","frame");
+            document.put("timestamp",DateTimeUtil.parseDateTime((int)((JSONObject)value).get("timestamp")));
+            document.put("type",((JSONObject)value).get("type"));
+            document.put("value", toDouble(((JSONObject)value).get("value")));
+            documents.add(document);
+        }
+        return reqBody;
+    }
+
+    private Double toDouble(Object value) {
+        try {
+            return (double) value;
+        } catch (ClassCastException e) {
+            try {
+                int val = (int) value;
+                return (double) val;
+            } catch (ClassCastException r) {
+                try {
+                    float val = (float) value;
+                    return (double) val;
+                } catch (ClassCastException s) {
+                    LOGGER.debug("not supported format used while uploading data");
+                    return null;
+                }
+            }
+        }
     }
 }
