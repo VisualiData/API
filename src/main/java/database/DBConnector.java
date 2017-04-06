@@ -1,24 +1,21 @@
 package database;
 
 import com.mongodb.*;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.*;
-
-@SuppressWarnings("unchecked")
+/*TODO Rewrite to more files and include dbstate*/
 public class DBConnector {
     private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
     private static final String DB_NAME = "visualidata";
     private static final DBConnector ourInstance = new DBConnector();
     private static MongoDatabase db;
     private static MongoClient client;
-    public static DBConnector getInstance() {
+    private static DatabaseState state;
+
+    static DBConnector getInstance() {
         return ourInstance;
     }
 
@@ -46,95 +43,28 @@ public class DBConnector {
         try{
             client.getConnectPoint();
             LOGGER.debug("Connected to db");
+            state = DatabaseState.STATE_RUNNING;
         } catch (MongoTimeoutException e){
             LOGGER.error("Could not connect to db");
             LOGGER.error(e);
+            state = DatabaseState.STATE_DOWN;
         }
         db = client.getDatabase(DB_NAME);
     }
 
-    // Insert single document
-    public JSONObject insert(String collectionName, BasicDBObject document){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        JSONObject result = new JSONObject();
-        boolean inserted;
-        try {
-            collection.insertOne(document);
-            inserted = true;
-        }catch (Exception e){
-            LOGGER.debug(e);
-            inserted = false;
-        }
-        result.put("inserted", inserted);
-        return result;
+    MongoDatabase getDB(){
+        return db;
     }
 
-    // Find document by specific value
-    public JSONArray find(String collectionName, String key, String value, BasicDBObject fields){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        BasicDBObject whereQuery = new BasicDBObject();
-        whereQuery.put(key, value);
-        JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
-            result.add(document);
-        }
-        return result;
+    MongoClient getClient(){
+        return client;
     }
 
-    public JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
-            result.add(document);
-        }
-        return result;
+    public static DatabaseState getDBState() {
+        return state;
     }
 
-    public JSONObject updateQuery(String collectionName, BasicDBObject find, BasicDBObject replace){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        BasicDBObject updateResult = collection.findOneAndUpdate(find, new BasicDBObject("$set", replace));
-        boolean updated = false;
-        if(updateResult != null) {
-            updated = true;
-        }
-        JSONObject result = new JSONObject();
-        result.put("success", updated);
-        return result;
-    }
-
-    public JSONObject deleteQuery(String collectionName, BasicDBObject find){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        DeleteResult deleteResult = collection.deleteOne(find);
-        boolean deleted = false;
-        if(deleteResult.getDeletedCount() > 0){
-            deleted = true;
-        }
-        JSONObject result = new JSONObject();
-        result.put("success", deleted);
-        return result;
-    }
-
-    public boolean checkAuthorized(String key){
-        JSONArray result = find("auth_keys", "key", key, new BasicDBObject());
-        return result.size() == 1;
-    }
-
-    public static void renameCollection(String collectionName, String newCollectionName){
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        collection.renameCollection(new MongoNamespace(DB_NAME, newCollectionName));
-    }
-
-    // Get sensors for which a collection exists and sort the result
-    public JSONArray getAllSensors(){
-        List<String> sensors = new ArrayList<>();
-        for(String collectionName: db.listCollectionNames()){
-            if(!"sensordata".equals(collectionName) && !"auth_keys".equals(collectionName)) {
-                sensors.add(collectionName);
-            }
-        }
-        Collections.sort(sensors);
-        JSONArray result = new JSONArray();
-        result.addAll(sensors);
-        return result;
+    public static void setDBState(DatabaseState new_state) {
+        state = new_state;
     }
 }

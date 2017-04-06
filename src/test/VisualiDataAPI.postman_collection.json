@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "VisualiDataAPI",
-		"_postman_id": "ba9b10d0-35c6-1583-61cd-eb88a969e218",
+		"_postman_id": "cee64f2e-e7de-c44d-8a6f-5f513ef04528",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -33,7 +33,10 @@
 						"url": "{{url}}/sensors",
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"description": ""
 					},
 					"response": []
@@ -67,14 +70,164 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "henk",
+								"value": "{{auth_key}}",
 								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"value\": 20.0, \"nodeName\": \"CHIBB-Node-1\", \"timestamp\": \"2017-03-23T00:01:00\", \"timeframe\": \"frame\", \"type\":\"Temperature\"}"
+							"raw": "{\"value\": 20.0, \"nodeName\": \"CHIBB-Node-Test\", \"timestamp\": \"2017-03-23T00:01:00\", \"timeframe\": \"frame\", \"type\":\"Temperature\"}"
 						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add testnode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"message says Data added\"] = jsonData.message === \"Sensor added\";",
+									"tests[\"Status code in response is 202\"] = jsonData.statuscode === 201;",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sensorId\":\"CHIBB-Node-Test\", \"type\":\"Temperature\", \"nodeName\":\"Test-Node\", \"nodeType\":\"Data Collection Node\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get  testnode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"",
+									"tests[\"Response not empty\"] = jsonData.data !== [];"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor/CHIBB-Node-Test",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete testnode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"message says Data added\"] = jsonData.message === \"Sensor archived\";",
+									"tests[\"Status code in response is 202\"] = jsonData.statuscode === 200;",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sensorId\":\"CHIBB-Node-Test\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get testnode",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 404;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"error\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"",
+									"tests[\"Response not empty\"] = jsonData.data.length === 0;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor/CHIBB-Node-Testpok13",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -90,26 +243,6 @@
 				"body": {
 					"mode": "raw",
 					"raw": ""
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/sensor",
-			"request": {
-				"url": "{{url}}/sensor",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"sensorId\":\"CHIBB-Node-3\", \"type\":\"Temperature\", \"nodeName\":\"\", \"nodeType\":\"\"}"
 				},
 				"description": ""
 			},
@@ -136,35 +269,35 @@
 			"response": []
 		},
 		{
-			"name": "{{url}}/sensor",
+			"name": "Get all nodes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+							"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
+							"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+							"",
+							"tests[\"Response not empty\"] = jsonData.data.length !== 0;"
+						]
+					}
+				}
+			],
 			"request": {
-				"url": "{{url}}/sensor",
-				"method": "DELETE",
+				"url": "{{url}}/sensors",
+				"method": "GET",
 				"header": [
 					{
-						"key": "Content-Type",
-						"value": "application/json",
+						"key": "Authorization",
+						"value": "{{auth_key}}",
 						"description": ""
 					}
 				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"sensorId\":\"CHIBB-Node-3\"}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/sensor/CHIBB-Node-3",
-			"request": {
-				"url": "{{url}}/sensor/CHIBB-Node-3",
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
+				"body": {},
 				"description": ""
 			},
 			"response": []

@@ -13,7 +13,6 @@ import util.DateTimeUtil;
  */
 public class DBFormatter {
     private static final Logger LOGGER = LogManager.getLogger(DBFormatter.class);
-    private DBConnector connector = DBConnector.getInstance();
     public boolean formatDB(String timeframe, String newTimeframe){
         try{
             SensorsRoute sensorRoute = new SensorsRoute();
@@ -27,6 +26,7 @@ public class DBFormatter {
             }
             return true;
         }catch (Exception e){
+            LOGGER.error(e);
             return false;
         }
     }
@@ -47,7 +47,7 @@ public class DBFormatter {
         newDoc.put("timestamp",currentDate);
         newDoc.put("value",total/period.size());
         newDoc.put("timeframe",newTimeframe);
-        connector.insert(collectionName,newDoc);
+        DBQuery.insert(collectionName,newDoc);
     }
 
     private JSONArray getCollection(String timeframe, String dataType, String collectionName){
@@ -60,6 +60,6 @@ public class DBFormatter {
         conditions.put("$gt",lastDate);
         whereQuery.put("timestamp", conditions);
         whereQuery.put("type", dataType);
-        return connector.findQuery(collectionName,whereQuery, new BasicDBObject());
+        return DBQuery.findQuery(collectionName,whereQuery, new BasicDBObject());
     }
 }

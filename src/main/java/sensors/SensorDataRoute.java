@@ -1,7 +1,7 @@
 package sensors;
 
-import database.DBConnector;
 import com.mongodb.BasicDBObject;
+import database.DBQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -13,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 public class SensorDataRoute {
     private static final Logger LOGGER = LogManager.getLogger(SensorDataRoute.class);
-    private DBConnector connector = DBConnector.getInstance();
 
     public JSONArray getSensorData(String sensorId,String from,String to, String dataType) {
         // bouw die shit om
@@ -30,14 +29,14 @@ public class SensorDataRoute {
         fields.put("_id", 0);
         fields.put("value", 1);
         fields.put("timestamp", 1);
-        return connector.findQuery(sensorId,whereQuery,fields);
+        return DBQuery.findQuery(sensorId,whereQuery,fields);
     }
 
     public JSONObject insertSensorDummyData(BasicDBObject reqBody) {
-        return connector.insert(reqBody.get("nodeName").toString(), createDocument(reqBody));
+        return DBQuery.insert(reqBody.get("nodeName").toString(), createDocument(reqBody));
     }
     public JSONObject insertSensorData(BasicDBObject reqBody) {
-        return connector.insert(reqBody.get("nodeName").toString(), createDocument(reqBody));
+        return DBQuery.insert(reqBody.get("nodeName").toString(), createDocument(reqBody));
     }
 
     private BasicDBObject createDocument (BasicDBObject reqBody){
