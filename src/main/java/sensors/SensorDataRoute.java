@@ -14,8 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class SensorDataRoute {
     private static final Logger LOGGER = LogManager.getLogger(SensorDataRoute.class);
 
-    public JSONArray getSensorData(String sensorId,String from,String to, String dataType) {
-        // bouw die shit om
+    public JSONArray getSensorData(String sensorId, String from, String to, String dataType) {
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
         conditions.put("$lt",to);
