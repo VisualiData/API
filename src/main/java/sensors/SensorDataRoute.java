@@ -1,5 +1,6 @@
 package sensors;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import database.DBQuery;
 import org.apache.logging.log4j.LogManager;
@@ -34,23 +35,23 @@ public class SensorDataRoute {
     }
 
     public JSONObject insertSensorDummyData(BasicDBObject reqBody) {
-        return DBQuery.insertMany(reqBody.get("nodeName").toString(), createDocument(reqBody));
+        return DBQuery.insertMany(reqBody.get("sensor_id").toString(), createDocument(reqBody));
     }
     public JSONObject insertSensorData(BasicDBObject reqBody) {
-        return DBQuery.insertMany(reqBody.get("nodeName").toString(), createDocument(reqBody));
+        return DBQuery.insertMany(reqBody.get("sensor_id").toString(), createDocument(reqBody));
     }
 
     private List<BasicDBObject> createDocument (BasicDBObject reqBody){
         List<BasicDBObject> documents = new ArrayList<>();
-        JSONArray values = (JSONArray)reqBody.get("values");
+        BasicDBList values = (BasicDBList)reqBody.get("values");
         String id = (String)reqBody.get("sensor_id");
         for (Object value : values){
             BasicDBObject document = new BasicDBObject();
-            document.put("nodeName",id);
+            document.put("id",id);
             document.put("timeframe","frame");
-            document.put("timestamp",DateTimeUtil.parseDateTime((int)((JSONObject)value).get("timestamp")));
-            document.put("type",((JSONObject)value).get("type"));
-            document.put("value", toDouble(((JSONObject)value).get("value")));
+            document.put("timestamp",DateTimeUtil.parseDateTime((long)((BasicDBObject)value).get("timestamp")));
+            document.put("type",((BasicDBObject)value).get("type"));
+            document.put("value", toDouble(((BasicDBObject)value).get("value")));
             documents.add(document);
         }
         return documents;
@@ -58,13 +59,16 @@ public class SensorDataRoute {
 
     private Double toDouble(Object value) {
         try {
+            LOGGER.debug("try doube");
             return (double) value;
         } catch (ClassCastException e) {
             try {
+                LOGGER.debug("try int");
                 int val = (int) value;
                 return (double) val;
             } catch (ClassCastException r) {
                 try {
+                    LOGGER.debug("try float");
                     float val = (float) value;
                     return (double) val;
                 } catch (ClassCastException s) {
