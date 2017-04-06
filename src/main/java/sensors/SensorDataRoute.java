@@ -33,9 +33,15 @@ public class SensorDataRoute {
     }
 
     public JSONObject insertSensorDummyData(BasicDBObject reqBody) {
-        return DBQuery.insert(reqBody.get("nodeName").toString(), reqBody);
+        return DBQuery.insert(reqBody.get("nodeName").toString(), createDocument(reqBody));
     }
     public JSONObject insertSensorData(BasicDBObject reqBody) {
-        return DBQuery.insert(reqBody.get("nodeName").toString(), reqBody);
+        return DBQuery.insert(reqBody.get("nodeName").toString(), createDocument(reqBody));
+    }
+
+    private BasicDBObject createDocument (BasicDBObject reqBody){
+        BasicDBObject document = new BasicDBObject();
+        document = reqBody;
+        return document;
     }
 }
