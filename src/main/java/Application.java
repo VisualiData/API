@@ -47,6 +47,7 @@ public class Application{
                     halt(ResponseCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", ResponseCodes.NOT_AUTHORIZED).toJSONString());
                 }
             } else {
+                DBQuery.checkDBUp();
                 halt(ResponseCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", ResponseCodes.SERVER_ERROR).toJSONString());
             }
         });

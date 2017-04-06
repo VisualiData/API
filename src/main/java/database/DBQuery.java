@@ -21,16 +21,20 @@ public class DBQuery {
     private DBQuery(){}
 
     public static void checkDBUp(){
-        MongoClient client = DBConnector.getInstance().getClient();
         try {
+            MongoClient client = DBConnector.getInstance().getClient();
             client.getConnectPoint();
+            LOGGER.debug("DB up");
+            DBConnector.setDBState(DatabaseState.STATE_RUNNING);
         } catch(MongoTimeoutException e){
             LOGGER.error(e);
-            LOGGER.debug("DB downie");
+            LOGGER.debug("DB down");
+            DBConnector.setDBState(DatabaseState.STATE_DOWN);
         }
     }
 
     public static boolean checkAuthorized(String key){
+        checkDBUp();
         JSONArray result = find("auth_keys", "key", key, new BasicDBObject());
         return result.size() == 1;
     }
