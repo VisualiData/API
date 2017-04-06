@@ -6,8 +6,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class SensorsRoute {
-    private static final String IDENTIFIER = "sensorId";
-    private static final String SENSOR_DATA = "sensordata";
+    private static final String IDENTIFIER = "sensor_id";
+    private static final String SENSOR_DATA = "sensorData";
 
     public JSONObject addSensor(BasicDBObject reqBody) {
         return DBQuery.insert(SENSOR_DATA, reqBody);
@@ -15,7 +15,7 @@ public class SensorsRoute {
 
     public JSONObject getSensor(String sensorId){
         BasicDBObject fields = new BasicDBObject("_id", 0);
-        JSONArray result = DBQuery.find("sensordata", IDENTIFIER, sensorId, fields);
+        JSONArray result = DBQuery.find(SENSOR_DATA, IDENTIFIER, sensorId, fields);
         if(!result.isEmpty()){
             BasicDBObject document = (BasicDBObject) result.get(0);
             JSONObject sensor = new JSONObject();

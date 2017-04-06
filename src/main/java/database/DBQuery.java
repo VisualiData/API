@@ -24,7 +24,6 @@ public class DBQuery {
         try {
             MongoClient client = DBConnector.getInstance().getClient();
             client.getConnectPoint();
-            LOGGER.debug("DB up");
             DBConnector.setDBState(DatabaseState.STATE_RUNNING);
         } catch(MongoTimeoutException e){
             LOGGER.error(e);
@@ -99,6 +98,22 @@ public class DBQuery {
         boolean inserted;
         try {
             collection.insertOne(document);
+            inserted = true;
+        }catch (Exception e){
+            LOGGER.debug(e);
+            inserted = false;
+        }
+        result.put("inserted", inserted);
+        return result;
+    }
+
+    public static JSONObject insertMany(String collectionName, List<BasicDBObject> documents){
+        MongoDatabase db = DBConnector.getInstance().getDB();
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        JSONObject result = new JSONObject();
+        boolean inserted;
+        try {
+            collection.insertMany(documents);
             inserted = true;
         }catch (Exception e){
             LOGGER.debug(e);
