@@ -69,7 +69,7 @@ public class SensorDataRoute {
                     return (double) val;
                 } catch (ClassCastException s) {
                     LOGGER.debug("not supported format used while uploading data");
-                    return null;
+                    return 0.0;
                 }
             }
         }
