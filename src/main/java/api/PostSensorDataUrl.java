@@ -16,6 +16,16 @@ import static spark.Spark.post;
  * Passes data to DB class and returns OK status
  */
 public class PostSensorDataUrl implements IURL{
+    /**
+     * @api {post} /sensordata Post Sensor data
+     * @apiHeader {String} Authorization Authorization key.
+     * @apiName PostData
+     * @apiGroup Data
+     * @apiSuccessExample {json} Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {"statuscode":202,"data":[],"message":"Data added","status":"success"}
+     * @apiVersion 1.0.0
+     */
     @Override
     public void openUrl(){
         post("/sensordata", ( req, res) -> {
@@ -26,7 +36,17 @@ public class PostSensorDataUrl implements IURL{
             return ResponseUtil.generateFailed("Send json format", 400);
         });
 
-        // this route is for dummy data, which includes correct timestamp!
+        /**
+         * @api {post} /sensordata/dummy Post dummy sensor data
+         * @apiHeader {String} Authorization Authorization key.
+         * @apiName PostDummyData
+         * @apiGroup Data
+         * @apiDescription Post to this route does not add a timestamp unlike a post to /sensordata
+         * @apiSuccessExample {json} Success-Response:
+         *     HTTP/1.1 200 OK
+         *     {"statuscode":202,"data":[],"message":"Data added","status":"success"}
+         * @apiVersion 1.0.0
+         */
         post("/sensordata/dummy", (req,res) ->{
             if("application/json".equals(req.contentType())){
                 if(interactDummy(req)) {

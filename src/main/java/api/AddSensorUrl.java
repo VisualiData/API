@@ -12,10 +12,14 @@ import spark.Response;
 import util.ResponseCodes;
 import util.ResponseUtil;
 
-/**
- * Created by Gebruiker on 13-3-2017.
- */
 public class AddSensorUrl implements IURL {
+    /**
+     * @api {post} /sensor Add a sensor
+     * @apiHeader {String} Authorization Authorization key.
+     * @apiName AddSensor
+     * @apiGroup Sensor
+     * @apiVersion 1.0.0
+     */
     @Override
     public void openUrl(){
         post("/sensor", (req, res) -> {

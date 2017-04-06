@@ -13,6 +13,13 @@ import util.ResponseCodes;
 import util.ResponseUtil;
 
 public class UpdateSensorUrl implements IURL {
+    /**
+     * @api {post} /sensor Update a sensor
+     * @apiHeader {String} Authorization Authorization key.
+     * @apiName UpdateSensor
+     * @apiGroup Sensor
+     * @apiVersion 1.0.0
+     */
     @Override
     public void openUrl(){
         // TODO check if sensorId is present
