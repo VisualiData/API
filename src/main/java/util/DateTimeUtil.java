@@ -23,7 +23,7 @@ public class DateTimeUtil {
         return df.format(new Date(System.currentTimeMillis()));
     }
 
-    public static String parseDateTime(int milliseconds){
+    public static String parseDateTime(long milliseconds){
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         df.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
         return df.format(new Date(milliseconds));
