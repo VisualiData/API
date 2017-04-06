@@ -23,6 +23,12 @@ public class DateTimeUtil {
         return df.format(new Date(System.currentTimeMillis()));
     }
 
+    public static String parseDateTime(int milliseconds){
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
+        return df.format(new Date(milliseconds));
+    }
+
     public static String getDate(String timeFrame, boolean current){
         String format = "yyyy-MM-dd'T'00:00:00.00ZZ";
         int quarterAdjustment = 0;
