@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-/*TODO Rewrite to more files and include dbstate*/
+
 public class DBConnector {
     private static final Logger LOGGER = LogManager.getLogger(DBConnector.class);
     private static final String DB_NAME = "visualidata";
