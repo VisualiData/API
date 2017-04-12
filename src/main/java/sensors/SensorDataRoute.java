@@ -11,6 +11,7 @@ import util.DateTimeUtil;
 import util.TimeFrameUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,20 +21,31 @@ public class SensorDataRoute {
     private static final String SENSOR_ID = "sensor_id";
     private static final String VALUE = "value";
 
+    @SuppressWarnings("unchecked")
     public JSONArray getSensorData(String sensorId, String from, String to, String dataType) {
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
         conditions.put("$lt",to);
         conditions.put("$gt",from);
         whereQuery.put(TIMESTAMP, conditions);
-        whereQuery.put("type", dataType);
+        if(dataType != null) {
+            String[] splitDataTypes = dataType.split(",");
+            if (splitDataTypes.length == 1) {
+                whereQuery.put("type", dataType);
+            }else{
+                JSONArray dataTypes = new JSONArray();
+                dataTypes.addAll(Arrays.asList(splitDataTypes));
+                whereQuery.put("type", new BasicDBObject("$in", dataTypes));
+            }
+        }
         long difference = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
         LOGGER.debug(whereQuery.toString());
-        whereQuery.put(TIMESTAMP, TimeFrameUtil.getTimeFrame(difference));
+        whereQuery.put("timeframe", TimeFrameUtil.getTimeFrame(difference));
         BasicDBObject fields = new BasicDBObject();
         fields.put("_id", 0);
         fields.put(VALUE, 1);
         fields.put(TIMESTAMP, 1);
+        fields.put("type", 1);
         return DBQuery.findQuery(sensorId,whereQuery,fields);
     }
 
@@ -51,7 +63,7 @@ public class SensorDataRoute {
         for (Object value : values){
             BasicDBObject document = new BasicDBObject();
             document.put("id",id);
-            document.put(TIMESTAMP,"frame");
+            document.put("timeframe","frame");
             document.put(TIMESTAMP,DateTimeUtil.parseDateTime((long)((BasicDBObject)value).get(TIMESTAMP)));
             document.put("type",((BasicDBObject)value).get("type"));
             document.put(VALUE, toDouble(((BasicDBObject)value).get(VALUE)));

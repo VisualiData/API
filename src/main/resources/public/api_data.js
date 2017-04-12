@@ -45,7 +45,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/sensor/:id/:from/:to/:type",
-    "title": "Request Sensor data in time span",
+    "title": "Request Sensor data in time span for given type(s)",
     "header": {
       "fields": {
         "Header": [
@@ -91,6 +91,56 @@ define({ "api": [
             "optional": false,
             "field": "date",
             "description": "<p>type e.g. Temperature</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "src/main/java/api/GetSensorDataUrl.java",
+    "groupTitle": "Data"
+  },
+  {
+    "type": "get",
+    "url": "/sensor/:id/:from/:to",
+    "title": "Request Sensor data in time span",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetSensorDataAll",
+    "group": "Data",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Sensor ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "from",
+            "description": "<p>Start of time span.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "to",
+            "description": "<p>End of time span</p>"
           }
         ]
       }
