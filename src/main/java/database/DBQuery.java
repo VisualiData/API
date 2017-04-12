@@ -77,7 +77,7 @@ public class DBQuery {
     // Get sensors for which a collection exists and sort the result
     public static JSONArray getAllSensors(){
         MongoDatabase db = DBConnector.getInstance().getDB();
-        final String[] exclude = new String[]{"sensordata", "auth_keys"};
+        final String[] exclude = new String[]{"sensorData", "auth_keys"};
         List<String> sensors = new ArrayList<>();
         for(String collectionName: db.listCollectionNames()){
             if(!Arrays.asList(exclude).contains(collectionName)){

@@ -42,7 +42,7 @@ public class DeleteSensorUrl implements IURL {
     public JSONObject interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
         BasicDBObject requestBody = (BasicDBObject) JSON.parse(req.body());
-        sensorId = (String) requestBody.get("sensorId");
+        sensorId = (String) requestBody.get("sensor_id");
         return sensorRoute.archiveSensor(requestBody);
     }
 }

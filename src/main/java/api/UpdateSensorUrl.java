@@ -22,7 +22,6 @@ public class UpdateSensorUrl implements IURL {
      */
     @Override
     public void openUrl(){
-        // TODO check if sensorId is present
         post("/sensor/update", (req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("success")){

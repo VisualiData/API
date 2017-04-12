@@ -10,7 +10,7 @@ import util.ResponseUtil;
 
 import static spark.Spark.*;
 
-/*
+/**
  * Main class for initializing API
  */
 public class Application{

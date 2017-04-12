@@ -60,13 +60,13 @@ public class SensorDataRoute {
         List<BasicDBObject> documents = new ArrayList<>();
         BasicDBList values = (BasicDBList)reqBody.get("values");
         String id = (String)reqBody.get(SENSOR_ID);
-        for (Object value : values){
+        for (Object value : values) {
             BasicDBObject document = new BasicDBObject();
-            document.put("id",id);
-            document.put("timeframe","frame");
-            document.put(TIMESTAMP,DateTimeUtil.parseDateTime((long)((BasicDBObject)value).get(TIMESTAMP)));
-            document.put("type",((BasicDBObject)value).get("type"));
-            document.put(VALUE, toDouble(((BasicDBObject)value).get(VALUE)));
+            document.put("id", id);
+            document.put("timeframe", "frame");
+            document.put(TIMESTAMP, DateTimeUtil.parseDateTime((long) ((BasicDBObject) value).get(TIMESTAMP)));
+            document.put("type", ((BasicDBObject) value).get("type"));
+            document.put(VALUE, toDouble(((BasicDBObject) value).get(VALUE)));
             documents.add(document);
         }
         return documents;
