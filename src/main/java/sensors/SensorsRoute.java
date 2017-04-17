@@ -29,7 +29,7 @@ public class SensorsRoute {
     public JSONObject updateSensor(BasicDBObject reqBody) {
         BasicDBObject find = new BasicDBObject();
         find.append(IDENTIFIER, reqBody.get(IDENTIFIER));
-        return DBQuery.updateQuery(SENSOR_DATA, find, reqBody);
+        return DBQuery.replaceQuery(SENSOR_DATA, find, reqBody);
     }
 
     public JSONObject deleteSensor(BasicDBObject reqBody) {

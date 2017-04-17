@@ -24,7 +24,7 @@ public class UpdateSensorUrl implements IURL {
     public void openUrl(){
         post("/sensor/update", (req, res) -> {
             if("application/json".equals(req.contentType())){
-                if((boolean) interact(req, res).get("success")){
+                if((boolean) interact(req, res).get("updated")){
                     return ResponseUtil.generateSuccessMessage("Sensor updated", ResponseCodes.SUCCESS);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not updated", 400);

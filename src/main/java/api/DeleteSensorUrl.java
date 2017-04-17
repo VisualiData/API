@@ -27,7 +27,7 @@ public class DeleteSensorUrl implements IURL {
     public void openUrl(){
         delete("/sensor", ( req, res) -> {
             if("application/json".equals(req.contentType())){
-                if((boolean) interact(req, res).get("success")){
+                if((boolean) interact(req, res).get("updated")){
                     DBQuery.renameCollection(sensorId, sensorId + "_ARCHIVED_"+ DateTimeUtil.getTimeStamp());
                     return ResponseUtil.generateSuccessMessage("Sensor archived", ResponseCodes.SUCCESS);
                 }else {
