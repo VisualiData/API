@@ -90,7 +90,7 @@
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>type e.g. Temperature</p>"
+            "description": "<p>type e.g. Temperature OR Temperature,Pressure</p>"
           }
         ]
       }

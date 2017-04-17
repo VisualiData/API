@@ -79,7 +79,7 @@
 					"response": []
 				},
 				{
-					"name": "Add testnode",
+					"name": "Add sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -120,7 +120,7 @@
 					"response": []
 				},
 				{
-					"name": "Get  testnode",
+					"name": "Get  sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -154,7 +154,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all nodes",
+					"name": "Get all sensors",
 					"event": [
 						{
 							"listen": "test",
@@ -189,7 +189,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all data from node",
+					"name": "Get all data from sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -229,7 +229,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all Temperature data from node",
+					"name": "Get all Temperature data from sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -269,7 +269,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all Temperature and Pressure data from node",
+					"name": "Get all Temperature and Pressure data from sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -309,7 +309,32 @@
 					"response": []
 				},
 				{
-					"name": "Archive testnode",
+					"name": "Update sensor",
+					"request": {
+						"url": "{{url}}/sensor/update",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sensor_id\":\"{{testnode}}\", \"type\":\"Temperature\", \"nodeName\":\"Test-Node\", \"nodeType\":\"Data Collection Node\",\"position\":{\"x\":12,\"y\":13,\"floor\":\"1\"} }"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Archive sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -350,7 +375,7 @@
 					"response": []
 				},
 				{
-					"name": "Get testnode",
+					"name": "Get sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -384,26 +409,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "{{url}}/sensor/update",
-			"request": {
-				"url": "{{url}}/sensor/update",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"sensorId\":\"CHIBB-Node-3\", \"type\":\"Temperature\", \"nodeName\":\"Happy Plants Sensor Node 1\", \"nodeType\":\"Data Collection Node\", \"added\":\"yesterday\"}"
-				},
-				"description": ""
-			},
-			"response": []
 		}
 	]
 }
