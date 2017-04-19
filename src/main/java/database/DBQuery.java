@@ -47,7 +47,7 @@ public class DBQuery {
             deleted = true;
         }
         JSONObject result = new JSONObject();
-        result.put("success", deleted);
+        result.put("deleted", deleted);
         return result;
     }
 
@@ -77,7 +77,7 @@ public class DBQuery {
     // Get sensors for which a collection exists and sort the result
     public static JSONArray getAllSensors(){
         MongoDatabase db = DBConnector.getInstance().getDB();
-        final String[] exclude = new String[]{"sensordata", "auth_keys"};
+        final String[] exclude = new String[]{"sensorData", "auth_keys"};
         List<String> sensors = new ArrayList<>();
         for(String collectionName: db.listCollectionNames()){
             if(!Arrays.asList(exclude).contains(collectionName)){
@@ -138,7 +138,20 @@ public class DBQuery {
             updated = true;
         }
         JSONObject result = new JSONObject();
-        result.put("success", updated);
+        result.put("updated", updated);
+        return result;
+    }
+
+    public static JSONObject replaceQuery(String collectionName, BasicDBObject find, BasicDBObject replace){
+        MongoDatabase db = DBConnector.getInstance().getDB();
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
+        BasicDBObject updateResult = collection.findOneAndReplace(find, replace);
+        boolean updated = false;
+        if(updateResult != null) {
+            updated = true;
+        }
+        JSONObject result = new JSONObject();
+        result.put("updated", updated);
         return result;
     }
 }

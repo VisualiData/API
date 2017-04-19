@@ -8,9 +8,6 @@ import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
 import util.DateTimeUtil;
 
-/**
- * Created by Gebruiker on 20-3-2017.
- */
 public class DBFormatter {
     private static final Logger LOGGER = LogManager.getLogger(DBFormatter.class);
     public boolean formatDB(String timeframe, String newTimeframe){

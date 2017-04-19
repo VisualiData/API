@@ -24,7 +24,8 @@
 									"tests[\"message says Not Authorized\"] = jsonData.message === \"Not authorized\";",
 									"tests[\"Status code in response is 401\"] = jsonData.statuscode === 401;",
 									"tests[\"Status of response is error\"] = jsonData.status === \"error\";",
-									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";"
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"tests[\"Response data is empty\"] = jsonData.data.length === 0;"
 								]
 							}
 						}
@@ -67,23 +68,18 @@
 								"key": "Content-Type",
 								"value": "application/json",
 								"description": ""
-							},
-							{
-								"key": "Authorization",
-								"value": "{{auth_key}}",
-								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"value\": 20.0, \"nodeName\": \"CHIBB-Node-Test\", \"timestamp\": \"2017-03-23T00:01:00\", \"timeframe\": \"frame\", \"type\":\"Temperature\"}"
+							"raw": "{\"sensor_id\":\"{{testnode}}\",\"values\":[{\"value\": 20, \"type\":\"Temperature\", \"timestamp\": 1492007671552},{\"value\": 980, \"type\":\"Pressure\", \"timestamp\": 1492007671552},{\"value\": 21, \"type\":\"Temperature\", \"timestamp\": 1492007672552},{\"value\": 985, \"type\":\"Pressure\", \"timestamp\": 1492007672552}]}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Add testnode",
+					"name": "Add sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -117,14 +113,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"sensorId\":\"CHIBB-Node-Test\", \"type\":\"Temperature\", \"nodeName\":\"Test-Node\", \"nodeType\":\"Data Collection Node\"}"
+							"raw": "{\"sensor_id\":\"{{testnode}}\", \"type\":\"Temperature\", \"nodeName\":\"Test-Node\", \"nodeType\":\"Data Collection Node\"}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Get  testnode",
+					"name": "Get  sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -137,13 +133,13 @@
 									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
 									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
 									"",
-									"tests[\"Response not empty\"] = jsonData.data !== [];"
+									"tests[\"Response not empty\"] = jsonData.data.length !== 0;"
 								]
 							}
 						}
 					],
 					"request": {
-						"url": "{{url}}/sensor/CHIBB-Node-Test",
+						"url": "{{url}}/sensor/{{testnode}}",
 						"method": "GET",
 						"header": [
 							{
@@ -158,7 +154,187 @@
 					"response": []
 				},
 				{
-					"name": "Delete testnode",
+					"name": "Get all sensors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"",
+									"tests[\"Response not empty\"] = jsonData.data.length !== 0;",
+									"tests[\"Response contains testnode\"] = jsonData.data.indexOf(environment[\"testnode\"]) !== -1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensors",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all data from sensor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"",
+									"tests[\"Response not empty\"] = jsonData.data.length !== 0;",
+									"",
+									"tests[\"Type 1 is Temperature\"] = jsonData.data[0].type === \"Temperature\"",
+									"tests[\"Type 2 is Pressure\"] = jsonData.data[1].type === \"Pressure\""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor/{{testnode}}/2017-04-12T16:00:00/2017-04-12T17:00:00",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Temperature data from sensor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"",
+									"tests[\"Response not empty\"] = jsonData.data.length !== 0;",
+									"",
+									"tests[\"Type 1 is Temperature\"] = jsonData.data[0].type === \"Temperature\"",
+									"tests[\"Type 2 is Temperature\"] = jsonData.data[1].type === \"Temperature\""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor/{{testnode}}/2017-04-12T16:00:00/2017-04-12T17:00:00/Temperature",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get all Temperature and Pressure data from sensor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
+									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
+									"",
+									"tests[\"Response not empty\"] = jsonData.data.length !== 0;",
+									"",
+									"tests[\"Type 1 is Temperature\"] = jsonData.data[0].type === \"Temperature\"",
+									"tests[\"Type 2 is Pressure\"] = jsonData.data[1].type === \"Pressure\""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{url}}/sensor/{{testnode}}/2017-04-12T16:00:00/2017-04-12T17:00:00/Pressure,Temperature",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update sensor",
+					"request": {
+						"url": "{{url}}/sensor/update",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{auth_key}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"sensor_id\":\"{{testnode}}\", \"type\":\"Temperature\", \"nodeName\":\"Test-Node\", \"nodeType\":\"Data Collection Node\",\"position\":{\"x\":12,\"y\":13,\"floor\":\"1\"} }"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Archive sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -192,14 +368,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"sensorId\":\"CHIBB-Node-Test\"}"
+							"raw": "{\"sensor_id\":\"{{testnode}}\"}"
 						},
 						"description": ""
 					},
 					"response": []
 				},
 				{
-					"name": "Get testnode",
+					"name": "Get sensor",
 					"event": [
 						{
 							"listen": "test",
@@ -208,17 +384,17 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 404;",
-									"tests[\"Status of response is success\"] = jsonData.status === \"error\";",
+									"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
+									"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
 									"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
 									"",
-									"tests[\"Response not empty\"] = jsonData.data.length === 0;"
+									"tests[\"Response not empty\"] = jsonData.data.length !== 0;"
 								]
 							}
 						}
 					],
 					"request": {
-						"url": "{{url}}/sensor/CHIBB-Node-Testpok13",
+						"url": "{{url}}/sensor/{{testnode}}",
 						"method": "GET",
 						"header": [
 							{
@@ -233,74 +409,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "{{url}}/sensor/CHIBB-Node-3/2017-03-24T13:00:00/2017-03-24T14:00:00",
-			"request": {
-				"url": "{{url}}/sensor/CHIBB-Node-3/2017-03-24T13:00:00/2017-03-24T14:00:00",
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "{{url}}/sensor/update",
-			"request": {
-				"url": "{{url}}/sensor/update",
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"sensorId\":\"CHIBB-Node-3\", \"type\":\"Temperature\", \"nodeName\":\"Happy Plants Sensor Node 1\", \"nodeType\":\"Data Collection Node\", \"added\":\"yesterday\"}"
-				},
-				"description": ""
-			},
-			"response": []
-		},
-		{
-			"name": "Get all nodes",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"tests[\"Status code is 200\"] = responseCode.code === 200;",
-							"tests[\"Status code in response is 200\"] = jsonData.statuscode === 200;",
-							"tests[\"Status of response is success\"] = jsonData.status === \"success\";",
-							"tests[\"Response type is json\"] = postman.getResponseHeader(\"Content-Type\") === \"application/json\";",
-							"",
-							"tests[\"Response not empty\"] = jsonData.data.length !== 0;"
-						]
-					}
-				}
-			],
-			"request": {
-				"url": "{{url}}/sensors",
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "{{auth_key}}",
-						"description": ""
-					}
-				],
-				"body": {},
-				"description": ""
-			},
-			"response": []
 		}
 	]
 }

@@ -6,7 +6,6 @@ import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
-import util.DateTimeUtil;
 import util.ResponseCodes;
 import util.ResponseUtil;
 
@@ -62,7 +61,6 @@ public class PostSensorDataUrl implements IURL{
     public JSONObject interact(Request req, Response res){
         SensorDataRoute sensorDataRoute = new SensorDataRoute();
         BasicDBObject requestBody = (BasicDBObject) JSON.parse(req.body());
-        requestBody.append("timestamp", DateTimeUtil.getTimeStamp());
         return sensorDataRoute.insertSensorData(requestBody);
     }
 

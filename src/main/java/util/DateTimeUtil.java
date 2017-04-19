@@ -15,16 +15,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class DateTimeUtil {
     private static final Logger LOGGER = LogManager.getLogger(DateTimeUtil.class);
+    private static final String TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     private DateTimeUtil(){}
 
     public static String getTimeStamp(){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT);
         df.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
         return df.format(new Date(System.currentTimeMillis()));
     }
 
     public static String parseDateTime(long milliseconds){
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat df = new SimpleDateFormat(TIMESTAMP_FORMAT);
         df.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
         return df.format(new Date(milliseconds));
     }
@@ -59,7 +60,7 @@ public class DateTimeUtil {
         return df.format(new Date(System.currentTimeMillis() - 3600 * 250 * quarterAdjustment));
     }
     public static long getDateDiff(String date1, String date2, TimeUnit timeUnit) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        DateFormat format = new SimpleDateFormat(TIMESTAMP_FORMAT);
         long diffInMilliseconds;
         try{
             diffInMilliseconds = format.parse(date2).getTime() - format.parse(date1).getTime();
