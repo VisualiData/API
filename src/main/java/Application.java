@@ -18,6 +18,7 @@ public class Application{
     private Application(){}
 
     public static void main (String[] args){
+        // include static /public for api documentation
         staticFiles.location("/public");
         init();
         start();
@@ -27,6 +28,7 @@ public class Application{
         DBConnector.initDB();
         IURL[] addUrls = {
                 new AddSensorUrl(),
+                new GetSensorsHouseUrl(),
                 new UpdateSensorUrl(),
                 new DeleteSensorUrl(),
                 new GetAllSensorsUrl(),
