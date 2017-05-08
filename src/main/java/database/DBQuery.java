@@ -68,7 +68,6 @@ public class DBQuery {
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-        LOGGER.debug(whereQuery);
         for(BasicDBObject document: collection.find(whereQuery).projection(fields)){
             result.add(document);
         }
