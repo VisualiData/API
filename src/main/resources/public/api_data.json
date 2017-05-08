@@ -45,7 +45,7 @@
   {
     "type": "get",
     "url": "/sensor/:id/:from/:to/:type",
-    "title": "Request Sensor data in time span",
+    "title": "Request Sensor data in time span for given type(s)",
     "header": {
       "fields": {
         "Header": [
@@ -90,7 +90,57 @@
             "type": "String",
             "optional": false,
             "field": "date",
-            "description": "<p>type e.g. Temperature</p>"
+            "description": "<p>type e.g. Temperature OR Temperature,Pressure</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "src/main/java/api/GetSensorDataUrl.java",
+    "groupTitle": "Data"
+  },
+  {
+    "type": "get",
+    "url": "/sensor/:id/:from/:to",
+    "title": "Request Sensor data in time span",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetSensorDataAll",
+    "group": "Data",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Sensor ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "from",
+            "description": "<p>Start of time span.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Date",
+            "optional": false,
+            "field": "to",
+            "description": "<p>End of time span</p>"
           }
         ]
       }
@@ -231,6 +281,49 @@
     "group": "Sensor",
     "version": "1.0.0",
     "filename": "src/main/java/api/GetAllSensorsUrl.java",
+    "groupTitle": "Sensor"
+  },
+  {
+    "type": "get",
+    "url": "/house/:id/:floor",
+    "title": "Request Sensors from specific floor in house",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetHouseSensors",
+    "group": "Sensor",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>House ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "floor",
+            "description": "<p>Floor (optional).</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "src/main/java/api/GetSensorsHouseUrl.java",
     "groupTitle": "Sensor"
   },
   {

@@ -2,7 +2,7 @@ package util;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-/*
+/**
  * Class for creating response objects
  */
 public final class ResponseUtil {

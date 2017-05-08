@@ -20,16 +20,16 @@ def post_data(data):
     print(data)
     print(r.text)
 
-def generateFrames():
+def generate_frames():
     generateData("frame", 1/60)
 
-def generateHours():
+def generate_hours():
     generateData("hour", 1)
 
-def generateQuarter():
+def generate_quarter():
     generateData("quarter", 1/4)
 
-def generateData(timeframe, increaseBy):
+def generate_data(timeframe, increaseby):
     current_time = 0
     date = datetime.datetime.strptime(startDate, "%Y-%m-%d %H:%M:%S")
     while current_time < hoursToGenerate:
@@ -41,12 +41,12 @@ def generateData(timeframe, increaseBy):
         response["nodeName"] = nodeName
         response["type"] = sensorType
         post_data(response)
-        current_time = current_time + increaseBy
+        current_time = current_time + increaseby
 
 def get_temp(current_time):
     return round(math.sin((current_time-6)/4)+averagetemp, 2)
 
 if __name__ == "__main__":
-    generateFrames()
-    generateQuarter()
-    generateHours()
+    generate_frames()
+    generate_quarter()
+    generate_hours()
