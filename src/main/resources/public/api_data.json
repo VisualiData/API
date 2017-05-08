@@ -285,6 +285,49 @@
   },
   {
     "type": "get",
+    "url": "/house/:id/:floor",
+    "title": "Request Sensors from specific floor in house",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetHouseSensors",
+    "group": "Sensor",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>House ID.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "floor",
+            "description": "<p>Floor (optional).</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "src/main/java/api/GetSensorsHouseUrl.java",
+    "groupTitle": "Sensor"
+  },
+  {
+    "type": "get",
     "url": "/sensor/:id",
     "title": "Request Sensor information",
     "header": {
