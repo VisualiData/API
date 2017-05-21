@@ -1,3 +1,5 @@
+package application;
+
 import api.*;
 import database.DBConnector;
 import database.DBQuery;
