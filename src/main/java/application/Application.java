@@ -17,7 +17,6 @@ import static spark.Spark.*;
  * Main class for initializing API
  */
 public class Application{
-    private static final Logger LOGGER = LogManager.getLogger(Application.class);
     private Application(){}
 
     public static void main (String[] args){
@@ -48,8 +47,6 @@ public class Application{
 
         before((request, response) -> {
             if(!request.requestMethod().equals("OPTIONS")) {
-                LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
-                LOGGER.debug(request.body());
                 if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING) {
                     if (!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))) {
                         response.type("application/json");
