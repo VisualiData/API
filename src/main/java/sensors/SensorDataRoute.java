@@ -84,7 +84,6 @@ public class SensorDataRoute {
             document.put("type", ((BasicDBObject) value).get("type"));
             document.put(VALUE, toDouble(((BasicDBObject) value).get(VALUE)));
             documents.add(document);
-            System.out.println(document);
         }
         return documents;
     }
