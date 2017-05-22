@@ -7,12 +7,12 @@ from datetime import timedelta
 import requests
 import time
 
-startDate = "2017-03-24 12:00:00"
-averagetemp = 50
-hoursToGenerate = 24
+startDate = "2017-05-19 00:00:00"
+averagetemp = 20
+hoursToGenerate = 72
 url = "http://localhost:4567/sensordata/dummy"
-nodeName = "CHIBB-Node-4"
-sensorType = "Luchtvochtigheid"
+nodeName = "CHIBB-Test-01"
+sensorType = "Temperature"
 
 def post_data(data):
     headers = {"Content-Type": "application/json"}
@@ -21,25 +21,30 @@ def post_data(data):
     print(r.text)
 
 def generate_frames():
-    generateData("frame", 1/60)
+    generate_data("frame", 1/60)
 
 def generate_hours():
-    generateData("hour", 1)
+    generate_data("hour", 1)
 
 def generate_quarter():
-    generateData("quarter", 1/4)
+    generate_data("quarter", 1/4)
 
 def generate_data(timeframe, increaseby):
     current_time = 0
     date = datetime.datetime.strptime(startDate, "%Y-%m-%d %H:%M:%S")
     while current_time < hoursToGenerate:
-        timestamp = (date + timedelta(hours=current_time)).isoformat()
+        timestamp = (date + timedelta(hours=current_time)).timestamp() * 1000
         response = {}
-        response["value"] = get_temp(round(current_time, 2))
-        response["timestamp"] = str(timestamp)
-        response["timeframe"] = timeframe
-        response["nodeName"] = nodeName
-        response["type"] = sensorType
+        values = []
+        value = {}
+        value["value"] = get_temp(round(current_time, 2))
+        value["timestamp"] = int(timestamp)
+        value["timeframe"] = timeframe
+        response["sensor_id"] = nodeName
+        value["type"] = sensorType
+        values.append(value)
+        response["values"] = values
+        # print(response)
         post_data(response)
         current_time = current_time + increaseby
 

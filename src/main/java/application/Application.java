@@ -1,3 +1,5 @@
+package application;
+
 import api.*;
 import database.DBConnector;
 import database.DBQuery;
@@ -5,6 +7,7 @@ import database.DatabaseState;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import spark.Request;
+import spark.Response;
 import util.ResponseCodes;
 import util.ResponseUtil;
 
@@ -14,7 +17,6 @@ import static spark.Spark.*;
  * Main class for initializing API
  */
 public class Application{
-    private static final Logger LOGGER = LogManager.getLogger(Application.class);
     private Application(){}
 
     public static void main (String[] args){
@@ -41,16 +43,19 @@ public class Application{
             url.openUrl();
         }
         errorHandling();
+        options("/*", (Request request, Response response) -> "OK");
+
         before((request, response) -> {
-            LOGGER.debug(request.requestMethod() + " request made to: " + request.uri());
-            if(DBConnector.getDBState() == DatabaseState.STATE_RUNNING){
-                if(!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))){
-                    response.type("application/json");
-                    halt(ResponseCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", ResponseCodes.NOT_AUTHORIZED).toJSONString());
+            if(!request.requestMethod().equals("OPTIONS")) {
+                if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING) {
+                    if (!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))) {
+                        response.type("application/json");
+                        halt(ResponseCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", ResponseCodes.NOT_AUTHORIZED).toJSONString());
+                    }
+                } else {
+                    DBQuery.checkDBUp();
+                    halt(ResponseCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", ResponseCodes.SERVER_ERROR).toJSONString());
                 }
-            } else {
-                DBQuery.checkDBUp();
-                halt(ResponseCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", ResponseCodes.SERVER_ERROR).toJSONString());
             }
         });
         after((request, response) -> {
