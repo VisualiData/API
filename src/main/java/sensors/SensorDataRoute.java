@@ -50,7 +50,7 @@ public class SensorDataRoute {
     }
 
     public JSONObject insertSensorDummyData(BasicDBObject reqBody) {
-        return DBQuery.insertMany(reqBody.get(SENSOR_ID).toString(), createDocument(reqBody));
+        return DBQuery.insertMany(reqBody.get(SENSOR_ID).toString(), processDummyDocuments(reqBody));
     }
     public JSONObject insertSensorData(BasicDBObject reqBody) {
         return DBQuery.insertMany(reqBody.get(SENSOR_ID).toString(), createDocument(reqBody));
@@ -64,6 +64,22 @@ public class SensorDataRoute {
             BasicDBObject document = new BasicDBObject();
             document.put("id", id);
             document.put("timeframe", "frame");
+            document.put(TIMESTAMP, DateTimeUtil.parseDateTime((long) ((BasicDBObject) value).get(TIMESTAMP)));
+            document.put("type", ((BasicDBObject) value).get("type"));
+            document.put(VALUE, toDouble(((BasicDBObject) value).get(VALUE)));
+            documents.add(document);
+        }
+        return documents;
+    }
+
+    private List<BasicDBObject> processDummyDocuments(BasicDBObject reqBody){
+        List<BasicDBObject> documents = new ArrayList<>();
+        BasicDBList values = (BasicDBList)reqBody.get("values");
+        String id = (String)reqBody.get(SENSOR_ID);
+        for (Object value : values) {
+            BasicDBObject document = new BasicDBObject();
+            document.put("id", id);
+            document.put("timeframe", ((BasicDBObject) value).get("timeframe"));
             document.put(TIMESTAMP, DateTimeUtil.parseDateTime((long) ((BasicDBObject) value).get(TIMESTAMP)));
             document.put("type", ((BasicDBObject) value).get("type"));
             document.put(VALUE, toDouble(((BasicDBObject) value).get(VALUE)));
