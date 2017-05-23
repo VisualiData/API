@@ -4,6 +4,7 @@ import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -74,19 +75,15 @@ public class DBQuery {
         return result;
     }
 
-    // Get sensors for which a collection exists and sort the result
-    public static JSONArray getAllSensors(){
+    // Get sensors for every document in collection sensorData
+    public static JSONArray getAllSensors(String collectionName ,BasicDBObject fields){
         MongoDatabase db = DBConnector.getInstance().getDB();
-        final String[] exclude = new String[]{"sensorData", "auth_keys"};
-        List<String> sensors = new ArrayList<>();
-        for(String collectionName: db.listCollectionNames()){
-            if(!Arrays.asList(exclude).contains(collectionName)){
-                sensors.add(collectionName);
-            }
-        }
-        Collections.sort(sensors);
+        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-        result.addAll(sensors);
+        for(BasicDBObject document: collection.find().projection(fields)){
+            result.add(document);
+        }
+        LOGGER.debug(result);
         return result;
     }
 
