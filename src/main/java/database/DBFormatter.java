@@ -8,6 +8,9 @@ import com.mongodb.BasicDBObject;
 import org.json.simple.JSONArray;
 import util.DateTimeUtil;
 
+import static util.DBNames.TIMESTAMP;
+import static util.DBNames.TIME_FRAME;
+
 public class DBFormatter {
     private static final Logger LOGGER = LogManager.getLogger(DBFormatter.class);
     public boolean formatDB(String timeframe, String newTimeframe){
@@ -41,21 +44,21 @@ public class DBFormatter {
         }
         BasicDBObject newDoc = new BasicDBObject();
         String currentDate = DateTimeUtil.getDate(timeframe, true);
-        newDoc.put("timestamp",currentDate);
+        newDoc.put(TIMESTAMP,currentDate);
         newDoc.put("value",total/period.size());
-        newDoc.put("timeframe",newTimeframe);
+        newDoc.put(TIME_FRAME,newTimeframe);
         DBQuery.insert(collectionName,newDoc);
     }
 
     private JSONArray getCollection(String timeframe, String dataType, String collectionName){
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
-        whereQuery.put("timeframe", timeframe);
+        whereQuery.put(TIME_FRAME, timeframe);
         String currentDate = DateTimeUtil.getDate(timeframe, true);
         String lastDate = DateTimeUtil.getDate(timeframe, false);
         conditions.put("$lt",currentDate);
         conditions.put("$gt",lastDate);
-        whereQuery.put("timestamp", conditions);
+        whereQuery.put(TIMESTAMP, conditions);
         whereQuery.put("type", dataType);
         return DBQuery.findQuery(collectionName,whereQuery, new BasicDBObject());
     }

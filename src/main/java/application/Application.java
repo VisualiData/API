@@ -1,14 +1,19 @@
 package application;
 
 import api.*;
+import api.data.FormatDataBaseUrl;
+import api.data.GetSensorDataUrl;
+import api.sensor.GetSensorURL;
+import api.house.GetSensorsHouseUrl;
+import api.sensor.AddSensorUrl;
+import api.sensor.DeleteSensorUrl;
+import api.sensor.PostSensorDataUrl;
 import database.DBConnector;
 import database.DBQuery;
 import database.DatabaseState;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.*;
@@ -27,13 +32,15 @@ public class Application{
     }
 
     private static void start(){
+        // initialize DB connection
         DBConnector.initDB();
+        // load url endpoints
         IURL[] addUrls = {
                 new AddSensorUrl(),
                 new GetSensorsHouseUrl(),
-                new UpdateSensorUrl(),
+                new DeleteSensorUrl.UpdateSensorUrl(),
                 new DeleteSensorUrl(),
-                new GetAllSensorsUrl(),
+                new AddSensorUrl.GetAllSensorsUrl(),
                 new GetSensorDataUrl(),
                 new PostSensorDataUrl(),
                 new FormatDataBaseUrl(),
@@ -42,22 +49,23 @@ public class Application{
         for (IURL url : addUrls){
             url.openUrl();
         }
+
         errorHandling();
+
+        // Catch OPTIONS for javascript ajax calls
         options("/*", (Request request, Response response) -> "OK");
 
         before((request, response) -> {
-            if(!request.requestMethod().equals("OPTIONS")) {
-                if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING) {
-                    if (!authenticated(request) && !("/sensordata/dummy".equals(request.uri()) || "/sensordata".equals(request.uri()))) {
-                        response.type("application/json");
-                        halt(ResponseCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", ResponseCodes.NOT_AUTHORIZED).toJSONString());
-                    }
-                } else {
-                    DBQuery.checkDBUp();
-                    halt(ResponseCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", ResponseCodes.SERVER_ERROR).toJSONString());
+            if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING && !"OPTIONS".equals(request.requestMethod())) {
+                if (!authenticated(request)) {
+                    halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
                 }
+            } else {
+                DBQuery.checkDBUp();
+                halt(HttpCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", HttpCodes.SERVER_ERROR).toJSONString());
             }
         });
+
         after((request, response) -> {
             response.type("application/json");
             response.header("Access-Control-Allow-Origin", "*");
@@ -66,13 +74,17 @@ public class Application{
         });
     }
 
-
+    // Custom error responses
     private static void errorHandling(){
-        notFound(ResponseUtil.generateFailed("Not Found", ResponseCodes.NOT_FOUND).toJSONString());
-        internalServerError(ResponseUtil.generateFailed("Internal server error", ResponseCodes.SERVER_ERROR).toJSONString());
+        notFound(ResponseUtil.generateFailed("Not Found", HttpCodes.NOT_FOUND).toJSONString());
+        internalServerError(ResponseUtil.generateFailed("Internal server error", HttpCodes.SERVER_ERROR).toJSONString());
     }
 
+    // check if authorized in headers or url
     private static boolean authenticated(Request request) {
-        return request.headers("Authorization") != null && DBQuery.checkAuthorized(request.headers("Authorization"));
+        if (request.headers("Authorization") != null) {
+            return DBQuery.checkAuthorized(request.headers("Authorization"));
+        } else
+            return request.queryParams("authkey") != null && DBQuery.checkAuthorized(request.queryParams("authkey"));
     }
 }

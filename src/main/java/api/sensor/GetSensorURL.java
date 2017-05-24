@@ -1,15 +1,16 @@
-package api;
+package api.sensor;
 
+import api.IURL;
 import org.json.simple.JSONObject;
 import sensors.SensorsRoute;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.get;
 
-public class GetSensorURL implements IURL{
+public class GetSensorURL implements IURL {
     /**
      * @api {get} /sensor/:id Request Sensor information
      * @apiHeader {String} Authorization Authorization key.
@@ -31,9 +32,9 @@ public class GetSensorURL implements IURL{
         SensorsRoute sensorsRoute = new SensorsRoute();
         JSONObject result = sensorsRoute.getSensor(req.params("id"));
         if (result != null) {
-            return ResponseUtil.generateSuccess(result, ResponseCodes.SUCCESS);
+            return ResponseUtil.generateSuccess(result, HttpCodes.SUCCESS);
         }else{
-            return ResponseUtil.generateFailed("Sensor not found", ResponseCodes.NOT_FOUND);
+            return ResponseUtil.generateFailed("Sensor not found", HttpCodes.NOT_FOUND);
         }
     }
 }

@@ -1,11 +1,12 @@
-package api;
+package api.data;
 
+import api.IURL;
 import org.json.simple.JSONArray;
 import sensors.SensorDataRoute;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.get;
@@ -44,6 +45,6 @@ public class GetSensorDataUrl implements IURL {
     public JSONObject interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
         JSONArray result = sensorRoute.getSensorData(req.params(":id"),req.params(":from"),req.params(":to"),req.params(":type"));
-        return ResponseUtil.generateSuccess(result, ResponseCodes.SUCCESS);
+        return ResponseUtil.generateSuccess(result, HttpCodes.SUCCESS);
     }
 }

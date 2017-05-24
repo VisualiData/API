@@ -30,10 +30,6 @@ public class SensorsRoute {
         return DBQuery.replaceQuery(DBNames.SENSOR_DATA, find, reqBody);
     }
 
-    public JSONObject deleteSensor(BasicDBObject reqBody) {
-        return DBQuery.deleteQuery(DBNames.SENSOR_DATA, reqBody);
-    }
-
     public JSONObject archiveSensor(BasicDBObject reqBody){
         BasicDBObject archive = new BasicDBObject();
         archive.put("archived", true);
