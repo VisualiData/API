@@ -59,7 +59,7 @@ public class DeleteSensorUrl implements IURL {
          */
         @Override
         public void openUrl(){
-            put("/sensor/update", (req, res) -> {
+            post("/sensor/update", (req, res) -> {
                 if("application/json".equals(req.contentType())){
                     if((boolean) interact(req, res).get("updated")){
                         return ResponseUtil.generateSuccessMessage("Sensor updated", HttpCodes.SUCCESS);
