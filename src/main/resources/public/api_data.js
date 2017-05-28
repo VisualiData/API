@@ -39,7 +39,7 @@ define({ "api": [
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/FormatDataBaseUrl.java",
+    "filename": "src/main/java/api/data/FormatDataBaseUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -96,7 +96,7 @@ define({ "api": [
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorDataUrl.java",
+    "filename": "src/main/java/api/data/GetSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -146,7 +146,7 @@ define({ "api": [
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorDataUrl.java",
+    "filename": "src/main/java/api/data/GetSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -178,7 +178,7 @@ define({ "api": [
       ]
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/PostSensorDataUrl.java",
+    "filename": "src/main/java/api/sensor/PostSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -211,7 +211,7 @@ define({ "api": [
       ]
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/PostSensorDataUrl.java",
+    "filename": "src/main/java/api/sensor/PostSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -234,7 +234,7 @@ define({ "api": [
     "name": "AddSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/AddSensorUrl.java",
+    "filename": "src/main/java/api/sensor/AddSensorUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -257,7 +257,7 @@ define({ "api": [
     "name": "ArchiveSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/DeleteSensorUrl.java",
+    "filename": "src/main/java/api/sensor/DeleteSensorUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -280,7 +280,7 @@ define({ "api": [
     "name": "GetAllSensors",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetAllSensorsUrl.java",
+    "filename": "src/main/java/api/sensor/AddSensorUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -323,7 +323,7 @@ define({ "api": [
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorsHouseUrl.java",
+    "filename": "src/main/java/api/house/GetSensorsHouseUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -375,7 +375,7 @@ define({ "api": [
       ]
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorURL.java",
+    "filename": "src/main/java/api/sensor/GetSensorURL.java",
     "groupTitle": "Sensor"
   },
   {
@@ -398,7 +398,7 @@ define({ "api": [
     "name": "UpdateSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/UpdateSensorUrl.java",
+    "filename": "src/main/java/api/sensor/DeleteSensorUrl.java",
     "groupTitle": "Sensor"
   }
 ] });
