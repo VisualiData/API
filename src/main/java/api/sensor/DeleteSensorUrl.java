@@ -14,6 +14,7 @@ import util.ResponseUtil;
 
 import static spark.Spark.delete;
 import static spark.Spark.post;
+import static spark.Spark.put;
 
 public class DeleteSensorUrl implements IURL {
     private String sensorId = null;
@@ -50,7 +51,7 @@ public class DeleteSensorUrl implements IURL {
 
     public static class UpdateSensorUrl implements IURL {
         /**
-         * @api {post} /sensor Update a sensor
+         * @api {put} /sensor Update a sensor
          * @apiHeader {String} Authorization Authorization key.
          * @apiName UpdateSensor
          * @apiGroup Sensor
@@ -58,7 +59,7 @@ public class DeleteSensorUrl implements IURL {
          */
         @Override
         public void openUrl(){
-            post("/sensor/update", (req, res) -> {
+            put("/sensor/update", (req, res) -> {
                 if("application/json".equals(req.contentType())){
                     if((boolean) interact(req, res).get("updated")){
                         return ResponseUtil.generateSuccessMessage("Sensor updated", HttpCodes.SUCCESS);
