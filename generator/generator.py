@@ -12,7 +12,7 @@ startDate = "2017-05-27 00:00:00"
 averagetemp = 20
 hoursToGenerate = 72
 url = "http://localhost:4567/sensordata/dummy?authkey=dev"
-nodeName = "CHIBB-Test-02"
+nodeName = "CHIBB-Test-03"
 sensorType = "Temperature"
 
 def post_data(data):

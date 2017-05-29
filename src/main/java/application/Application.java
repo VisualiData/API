@@ -3,11 +3,8 @@ package application;
 import api.*;
 import api.data.FormatDataBaseUrl;
 import api.data.GetSensorDataUrl;
-import api.sensor.GetSensorURL;
+import api.sensor.*;
 import api.house.GetSensorsHouseUrl;
-import api.sensor.AddSensorUrl;
-import api.sensor.DeleteSensorUrl;
-import api.sensor.PostSensorDataUrl;
 import database.DBConnector;
 import database.DBQuery;
 import database.DatabaseState;
@@ -38,9 +35,9 @@ public class Application{
         IURL[] addUrls = {
                 new AddSensorUrl(),
                 new GetSensorsHouseUrl(),
-                new DeleteSensorUrl.UpdateSensorUrl(),
+                new UpdateSensorUrl(),
                 new DeleteSensorUrl(),
-                new AddSensorUrl.GetAllSensorsUrl(),
+                new GetAllSensorsUrl(),
                 new GetSensorDataUrl(),
                 new PostSensorDataUrl(),
                 new FormatDataBaseUrl(),
