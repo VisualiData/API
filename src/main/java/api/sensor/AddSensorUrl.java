@@ -1,7 +1,9 @@
-package api;
+package api.sensor;
 
+import api.IURL;
 import sensors.SensorsRoute;
 
+import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.mongodb.BasicDBObject;
@@ -9,7 +11,7 @@ import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
 
 public class AddSensorUrl implements IURL {
@@ -25,7 +27,7 @@ public class AddSensorUrl implements IURL {
         post("/sensor", (req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("inserted")){
-                    return ResponseUtil.generateSuccessMessage("Sensor added", ResponseCodes.CREATED);
+                    return ResponseUtil.generateSuccessMessage("Sensor added", HttpCodes.CREATED);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not added", 400);
                 }

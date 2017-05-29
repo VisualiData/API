@@ -1,12 +1,13 @@
-package api;
+package api.sensor;
 
+import api.IURL;
 import sensors.SensorDataRoute;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.post;
@@ -14,7 +15,7 @@ import static spark.Spark.post;
 /**
  * Passes data to DB class and returns OK status
  */
-public class PostSensorDataUrl implements IURL{
+public class PostSensorDataUrl implements IURL {
     /**
      * @api {post} /sensordata Post Sensor data
      * @apiHeader {String} Authorization Authorization key.
@@ -30,7 +31,7 @@ public class PostSensorDataUrl implements IURL{
         post("/sensordata", ( req, res) -> {
             if("application/json".equals(req.contentType())){
                 interact(req, res);
-                return ResponseUtil.generateSuccessMessage("Data added", ResponseCodes.ACCEPTED);
+                return ResponseUtil.generateSuccessMessage("Data added", HttpCodes.ACCEPTED);
             }
             return ResponseUtil.generateFailed("Send json format", 400);
         });
@@ -49,7 +50,7 @@ public class PostSensorDataUrl implements IURL{
         post("/sensordata/dummy", (req,res) ->{
             if("application/json".equals(req.contentType())){
                 if(interactDummy(req)) {
-                    return ResponseUtil.generateSuccessMessage("Data added", ResponseCodes.ACCEPTED);
+                    return ResponseUtil.generateSuccessMessage("Data added", HttpCodes.ACCEPTED);
                 }else{
                     return ResponseUtil.generateFailed("Data not added", 400);
                 }

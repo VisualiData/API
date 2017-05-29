@@ -1,10 +1,11 @@
-package api;
+package api.sensor;
 
-import sensors.SensorsRoute;
+import api.IURL;
 import org.json.simple.JSONObject;
+import sensors.SensorsRoute;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
 
 import static spark.Spark.get;
@@ -25,6 +26,6 @@ public class GetAllSensorsUrl implements IURL {
     @Override
     public JSONObject interact(Request req, Response res){
         SensorsRoute sensorRoute = new SensorsRoute();
-        return ResponseUtil.generateSuccess(sensorRoute.getAllSensors(), ResponseCodes.SUCCESS);
+        return ResponseUtil.generateSuccess(sensorRoute.getAllSensors(), HttpCodes.SUCCESS);
     }
 }

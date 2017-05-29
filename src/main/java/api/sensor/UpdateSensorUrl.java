@@ -1,20 +1,20 @@
-package api;
+package api.sensor;
 
-import sensors.SensorsRoute;
-
-import static spark.Spark.post;
-
+import api.IURL;
 import com.mongodb.BasicDBObject;
 import com.mongodb.util.JSON;
 import org.json.simple.JSONObject;
+import sensors.SensorsRoute;
 import spark.Request;
 import spark.Response;
-import util.ResponseCodes;
+import util.HttpCodes;
 import util.ResponseUtil;
+
+import static spark.Spark.post;
 
 public class UpdateSensorUrl implements IURL {
     /**
-     * @api {post} /sensor Update a sensor
+     * @api {post} /sensor/update Update a sensor
      * @apiHeader {String} Authorization Authorization key.
      * @apiName UpdateSensor
      * @apiGroup Sensor
@@ -25,7 +25,7 @@ public class UpdateSensorUrl implements IURL {
         post("/sensor/update", (req, res) -> {
             if("application/json".equals(req.contentType())){
                 if((boolean) interact(req, res).get("updated")){
-                    return ResponseUtil.generateSuccessMessage("Sensor updated", ResponseCodes.SUCCESS);
+                    return ResponseUtil.generateSuccessMessage("Sensor updated", HttpCodes.SUCCESS);
                 }else {
                     return ResponseUtil.generateFailed("Sensor not updated", 400);
                 }
