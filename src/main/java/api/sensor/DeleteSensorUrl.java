@@ -51,7 +51,7 @@ public class DeleteSensorUrl implements IURL {
 
     public static class UpdateSensorUrl implements IURL {
         /**
-         * @api {put} /sensor Update a sensor
+         * @api {post} /sensor/update Update a sensor
          * @apiHeader {String} Authorization Authorization key.
          * @apiName UpdateSensor
          * @apiGroup Sensor
