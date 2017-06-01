@@ -76,10 +76,12 @@ public class DBQuery {
 
     // Get sensors for every document in collection sensorData
     public static JSONArray getAllSensors(String collectionName ,BasicDBObject fields){
+        BasicDBObject sort = new BasicDBObject();
+        sort.put("position.floor", 1);
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find().projection(fields)){
+        for(BasicDBObject document: collection.find().projection(fields).sort(sort)){
             result.add(document);
         }
         return result;
