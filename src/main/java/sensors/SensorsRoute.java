@@ -38,6 +38,7 @@ public class SensorsRoute {
 
     public JSONArray getAllSensors(){
         BasicDBObject fields = new BasicDBObject("_id", 0);
-        return DBQuery.getAllSensors("sensorData",fields);
+        BasicDBObject sort = new BasicDBObject("position.floor", 1);
+        return DBQuery.findQuery("sensorData", new BasicDBObject(), fields, sort);
     }
 }
