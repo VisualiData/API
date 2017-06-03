@@ -64,7 +64,7 @@ public class DBConnector {
         return state;
     }
 
-    static void setDBState(DatabaseState new_state) {
-        state = new_state;
+    static void setDBState(DatabaseState newState) {
+        state = newState;
     }
 }

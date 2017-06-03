@@ -379,8 +379,8 @@ define({ "api": [
     "groupTitle": "Sensor"
   },
   {
-    "type": "put",
-    "url": "/sensor",
+    "type": "post",
+    "url": "/sensor/update",
     "title": "Update a sensor",
     "header": {
       "fields": {
