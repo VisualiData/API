@@ -17,11 +17,11 @@ public class GetSensorURL implements IURL {
      * @apiName GetSensor
      * @apiGroup Sensor
      * @apiExample {js} Example url:
-     *     https://api.visualidata.nl/sensor/CHIBB-Test-Node
+     *     https://api.visualidata.nl/sensor/CHIBB-Test-02
      * @apiParam {String} id Sensor ID.
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
-     *     {"statuscode":200,"data":{"nodeName":"Test-Node","type":"Temperature","nodeType":"Data Collection Node","sensorId":"CHIBB-Node-Test"},"message":"","status":"success"}
+     *     {"statuscode":200,"data":{"sensor_id":"CHIBB-Test-02","nodeName":"","position":{"x":"1179","y":"418","floor":"1","house":"CHIBB"},"type":"Temperature","nodeType":"","status":"active"},"message":"","status":"success"}
      * @apiVersion 1.0.0
      */
     @Override
