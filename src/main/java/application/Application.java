@@ -3,6 +3,7 @@ package application;
 import api.*;
 import api.data.FormatDataBaseUrl;
 import api.data.GetSensorDataUrl;
+import api.house.GetHouseInfo;
 import api.sensor.*;
 import api.house.GetSensorsHouseUrl;
 import database.DBConnector;
@@ -41,7 +42,8 @@ public class Application{
                 new GetSensorDataUrl(),
                 new PostSensorDataUrl(),
                 new FormatDataBaseUrl(),
-                new GetSensorURL()
+                new GetSensorURL(),
+                new GetHouseInfo()
             };
         for (IURL url : addUrls){
             url.openUrl();
