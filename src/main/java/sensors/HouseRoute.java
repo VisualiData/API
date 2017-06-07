@@ -8,7 +8,7 @@ import util.DBNames;
 
 public class HouseRoute {
     public JSONArray getAllSensors(BasicDBObject reqBody){
-        return DBQuery.findQuery(DBNames.SENSOR_DATA, reqBody, new BasicDBObject("_id", 0));
+        return DBQuery.findQuery(DBNames.getSensorData(), reqBody, new BasicDBObject("_id", 0));
     }
 
     public JSONObject getHouseInfo(BasicDBObject requestBody) {

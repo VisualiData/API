@@ -215,6 +215,42 @@ define({ "api": [
     "groupTitle": "Data"
   },
   {
+    "type": "get",
+    "url": "/house-info/:id",
+    "title": "Request Sensors from specific floor in house",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetHouseInfo",
+    "group": "House",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>House ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "src/main/java/api/house/GetHouseInfo.java",
+    "groupTitle": "House"
+  },
+  {
     "type": "post",
     "url": "/sensor",
     "title": "Add a sensor",
@@ -280,7 +316,7 @@ define({ "api": [
     "name": "GetAllSensors",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/sensor/AddSensorUrl.java",
+    "filename": "src/main/java/api/sensor/GetAllSensorsUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -348,7 +384,7 @@ define({ "api": [
     "examples": [
       {
         "title": "Example url:",
-        "content": "https://api.visualidata.nl/sensor/CHIBB-Test-Node",
+        "content": "https://api.visualidata.nl/sensor/CHIBB-Test-02",
         "type": "js"
       }
     ],
@@ -369,7 +405,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n    {\"statuscode\":200,\"data\":{\"nodeName\":\"Test-Node\",\"type\":\"Temperature\",\"nodeType\":\"Data Collection Node\",\"sensorId\":\"CHIBB-Node-Test\"},\"message\":\"\",\"status\":\"success\"}",
+          "content": "HTTP/1.1 200 OK\n    {\"statuscode\":200,\"data\":{\"sensor_id\":\"CHIBB-Test-02\",\"nodeName\":\"\",\"position\":{\"x\":\"1179\",\"y\":\"418\",\"floor\":\"1\",\"house\":\"CHIBB\"},\"type\":\"Temperature\",\"nodeType\":\"\",\"status\":\"active\"},\"message\":\"\",\"status\":\"success\"}",
           "type": "json"
         }
       ]
@@ -398,7 +434,7 @@ define({ "api": [
     "name": "UpdateSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/sensor/DeleteSensorUrl.java",
+    "filename": "src/main/java/api/sensor/UpdateSensorUrl.java",
     "groupTitle": "Sensor"
   }
 ] });

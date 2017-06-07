@@ -6,7 +6,8 @@ package util;
 
 public class DBNames {
     // sensor info collection
-    public static final String SENSOR_DATA = "sensorData";
+    private static final String SENSOR_DATA = "sensorData";
+    private static String customSensorData = "";
     // sensor info fields
     public static final String SENSOR_ID = "sensor_id";
     public static final String SENSOR_HOUSE_ID = "position.house";
@@ -22,4 +23,12 @@ public class DBNames {
     public static final String HOUSE_ID = "house_id";
 
     private DBNames(){}
+
+    public static String getSensorData(){
+        return SENSOR_DATA + customSensorData;
+    }
+
+    public static void setSensorData(String sensorData){
+        customSensorData = sensorData;
+    }
 }

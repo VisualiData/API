@@ -11,6 +11,7 @@ import database.DBQuery;
 import database.DatabaseState;
 import spark.Request;
 import spark.Response;
+import util.DBNames;
 import util.HttpCodes;
 import util.ResponseUtil;
 
@@ -58,6 +59,11 @@ public class Application{
             if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING && !"OPTIONS".equals(request.requestMethod())) {
                 if (!authenticated(request)) {
                     halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
+                }
+                if(request.headers("From") != null){
+                    DBNames.setSensorData(request.headers("From"));
+                }else{
+                    DBNames.setSensorData("");
                 }
             } else {
                 DBQuery.checkDBUp();
