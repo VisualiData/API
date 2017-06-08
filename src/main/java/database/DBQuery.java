@@ -70,12 +70,11 @@ public class DBQuery {
         return result;
     }
 
-    // Get sensors for every document in collection sensorData
-    public static JSONArray getAllSensors(String collectionName ,BasicDBObject fields){
+    public static JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields, BasicDBObject sort){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
         JSONArray result = new JSONArray();
-        for(BasicDBObject document: collection.find().projection(fields)){
+        for(BasicDBObject document: collection.find(whereQuery).projection(fields).sort(sort)){
             result.add(document);
         }
         return result;

@@ -33,9 +33,9 @@ public class GetSensorsHouseUrl implements IURL {
     public JSONObject interact(Request req, Response res) {
         HouseRoute houseRoute = new HouseRoute();
         BasicDBObject requestBody = new BasicDBObject();
-        requestBody.put(DBNames.HOUSE_ID, req.params("id"));
+        requestBody.put(DBNames.SENSOR_HOUSE_ID, req.params("id"));
         if(req.params("floor") != null) {
-            requestBody.put(DBNames.FLOOR_ID, req.params("floor"));
+            requestBody.put(DBNames.SENSOR_FLOOR_ID, req.params("floor"));
         }
         return ResponseUtil.generateSuccess(houseRoute.getAllSensors(requestBody), HttpCodes.SUCCESS);
     }
