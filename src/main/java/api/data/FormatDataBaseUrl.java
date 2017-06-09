@@ -29,7 +29,7 @@ public class FormatDataBaseUrl implements IURL {
     @Override
     public JSONObject interact(Request req, Response res){
         DBFormatter formatter = new DBFormatter();
-        if (formatter.formatDB(req.params(":timeframe"),req.params("newtimeframe"))){
+        if (formatter.formatDB(req.params("timeframe"),req.params("newtimeframe"))){
             return ResponseUtil.generateSuccessMessage("Data formatted", HttpCodes.SUCCESS);
         }else{
             return ResponseUtil.generateFailed("Data not formatted",400);
