@@ -297,6 +297,29 @@
     "groupTitle": "Sensor"
   },
   {
+    "type": "post",
+    "url": "/sensor/check-status",
+    "title": "Updates sensor status in database",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "CheckSensorStatus",
+    "group": "Sensor",
+    "version": "1.0.0",
+    "filename": "src/main/java/api/sensor/CheckSensorStatus.java",
+    "groupTitle": "Sensor"
+  },
+  {
     "type": "get",
     "url": "/sensors",
     "title": "Request All Sensors",
