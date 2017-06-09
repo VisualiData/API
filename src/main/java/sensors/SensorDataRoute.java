@@ -24,7 +24,7 @@ public class SensorDataRoute {
     private static final String VALUE = "value";
 
     @SuppressWarnings("unchecked")
-    public JSONArray getSensorData(String sensorId, String from, String to, String dataType) {
+    public JSONArray getSensorData(String sensorId, String from, String to, String dataType, String dataFrame) {
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
         conditions.put("$lt",to);
@@ -43,8 +43,12 @@ public class SensorDataRoute {
             }
         }
         long difference = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
+        if (dataFrame == null) {
+            whereQuery.put(TIME_FRAME, TimeFrameUtil.getTimeFrame(difference));
+        }else {
+            whereQuery.put(TIME_FRAME, dataFrame);
+        }
         LOGGER.debug(whereQuery.toString());
-        whereQuery.put(TIME_FRAME, TimeFrameUtil.getTimeFrame(difference));
         BasicDBObject fields = new BasicDBObject();
         fields.put("_id", 0);
         fields.put(VALUE, 1);

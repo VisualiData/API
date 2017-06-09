@@ -44,7 +44,7 @@ public class GetSensorDataUrl implements IURL {
     @Override
     public JSONObject interact(Request req, Response res){
         SensorDataRoute sensorRoute = new SensorDataRoute();
-        JSONArray result = sensorRoute.getSensorData(req.params(":id"),req.params(":from"),req.params(":to"),req.params(":type"));
+        JSONArray result = sensorRoute.getSensorData(req.params("id"),req.params("from"),req.params("to"),req.params("type"), null);
         return ResponseUtil.generateSuccess(result, HttpCodes.SUCCESS);
     }
 }

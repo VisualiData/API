@@ -36,6 +36,7 @@ public class Application{
         // load url endpoints
         IURL[] addUrls = {
                 new AddSensorUrl(),
+                new CheckSensorStatus(),
                 new GetSensorsHouseUrl(),
                 new UpdateSensorUrl(),
                 new DeleteSensorUrl(),
