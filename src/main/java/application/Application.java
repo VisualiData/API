@@ -15,8 +15,6 @@ import util.DBNames;
 import util.HttpCodes;
 import util.ResponseUtil;
 
-import java.util.logging.Logger;
-
 import static spark.Spark.*;
 
 /**
