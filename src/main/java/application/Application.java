@@ -59,7 +59,6 @@ public class Application{
         before((request, response) -> {
             if(!"OPTIONS".equals(request.requestMethod())){
                 if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING) {
-                    System.out.println("pass first check");
                     if (!authenticated(request)) {
                         halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
                     }
