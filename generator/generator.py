@@ -6,12 +6,13 @@ import datetime
 from datetime import timedelta
 import requests
 import time
+import random
 
-startDate = "2017-05-19 00:00:00"
+startDate = "2017-05-27 00:00:00"
 averagetemp = 20
 hoursToGenerate = 72
-url = "http://localhost:4567/sensordata/dummy"
-nodeName = "CHIBB-Test-01"
+url = "http://localhost:4567/sensordata/dummy?authkey=dev"
+nodeName = "CHIBB-Test-03"
 sensorType = "Temperature"
 
 def post_data(data):
@@ -49,7 +50,8 @@ def generate_data(timeframe, increaseby):
         current_time = current_time + increaseby
 
 def get_temp(current_time):
-    return round(math.sin((current_time-6)/4)+averagetemp, 2)
+    num = random.sample(range(6),1)
+    return round(math.sin((current_time-6)/4)+averagetemp + (num[0] / 10), 2)
 
 if __name__ == "__main__":
     generate_frames()

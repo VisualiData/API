@@ -15,19 +15,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static util.DBNames.SENSOR_ID;
+import static util.DBNames.TIME_FRAME;
+import static util.DBNames.TIMESTAMP;
+
 public class SensorDataRoute {
     private static final Logger LOGGER = LogManager.getLogger(SensorDataRoute.class);
-    private static final String TIMESTAMP = "timestamp";
-    private static final String SENSOR_ID = "sensor_id";
     private static final String VALUE = "value";
 
     @SuppressWarnings("unchecked")
-    public JSONArray getSensorData(String sensorId, String from, String to, String dataType) {
+    public JSONArray getSensorData(String sensorId, String from, String to, String dataType, String dataFrame) {
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject conditions = new BasicDBObject();
         conditions.put("$lt",to);
         conditions.put("$gt",from);
         whereQuery.put(TIMESTAMP, conditions);
+
+        // if sensor type is specified use them to select te data
         if(dataType != null) {
             String[] splitDataTypes = dataType.split(",");
             if (splitDataTypes.length == 1) {
@@ -39,8 +43,12 @@ public class SensorDataRoute {
             }
         }
         long difference = DateTimeUtil.getDateDiff(from,to, TimeUnit.MILLISECONDS);
+        if (dataFrame == null) {
+            whereQuery.put(TIME_FRAME, TimeFrameUtil.getTimeFrame(difference));
+        }else {
+            whereQuery.put(TIME_FRAME, dataFrame);
+        }
         LOGGER.debug(whereQuery.toString());
-        whereQuery.put("timeframe", TimeFrameUtil.getTimeFrame(difference));
         BasicDBObject fields = new BasicDBObject();
         fields.put("_id", 0);
         fields.put(VALUE, 1);
@@ -63,7 +71,7 @@ public class SensorDataRoute {
         for (Object value : values) {
             BasicDBObject document = new BasicDBObject();
             document.put("id", id);
-            document.put("timeframe", "frame");
+            document.put(TIME_FRAME, "frame");
             document.put(TIMESTAMP, DateTimeUtil.parseDateTime((long) ((BasicDBObject) value).get(TIMESTAMP)));
             document.put("type", ((BasicDBObject) value).get("type"));
             document.put(VALUE, toDouble(((BasicDBObject) value).get(VALUE)));
@@ -79,7 +87,7 @@ public class SensorDataRoute {
         for (Object value : values) {
             BasicDBObject document = new BasicDBObject();
             document.put("id", id);
-            document.put("timeframe", ((BasicDBObject) value).get("timeframe"));
+            document.put(TIME_FRAME, ((BasicDBObject) value).get(TIME_FRAME));
             document.put(TIMESTAMP, DateTimeUtil.parseDateTime((long) ((BasicDBObject) value).get(TIMESTAMP)));
             document.put("type", ((BasicDBObject) value).get("type"));
             document.put(VALUE, toDouble(((BasicDBObject) value).get(VALUE)));

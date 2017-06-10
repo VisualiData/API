@@ -39,7 +39,7 @@
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/FormatDataBaseUrl.java",
+    "filename": "src/main/java/api/data/FormatDataBaseUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -96,7 +96,7 @@
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorDataUrl.java",
+    "filename": "src/main/java/api/data/GetSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -146,7 +146,7 @@
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorDataUrl.java",
+    "filename": "src/main/java/api/data/GetSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -178,7 +178,7 @@
       ]
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/PostSensorDataUrl.java",
+    "filename": "src/main/java/api/sensor/PostSensorDataUrl.java",
     "groupTitle": "Data"
   },
   {
@@ -211,8 +211,44 @@
       ]
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/PostSensorDataUrl.java",
+    "filename": "src/main/java/api/sensor/PostSensorDataUrl.java",
     "groupTitle": "Data"
+  },
+  {
+    "type": "get",
+    "url": "/house-info/:id",
+    "title": "Request Sensors from specific floor in house",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "GetHouseInfo",
+    "group": "House",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>House ID.</p>"
+          }
+        ]
+      }
+    },
+    "version": "1.0.0",
+    "filename": "src/main/java/api/house/GetHouseInfo.java",
+    "groupTitle": "House"
   },
   {
     "type": "post",
@@ -234,7 +270,7 @@
     "name": "AddSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/AddSensorUrl.java",
+    "filename": "src/main/java/api/sensor/AddSensorUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -257,7 +293,30 @@
     "name": "ArchiveSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/DeleteSensorUrl.java",
+    "filename": "src/main/java/api/sensor/DeleteSensorUrl.java",
+    "groupTitle": "Sensor"
+  },
+  {
+    "type": "post",
+    "url": "/sensor/check-status",
+    "title": "Updates sensor status in database",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Authorization key.</p>"
+          }
+        ]
+      }
+    },
+    "name": "CheckSensorStatus",
+    "group": "Sensor",
+    "version": "1.0.0",
+    "filename": "src/main/java/api/sensor/CheckSensorStatus.java",
     "groupTitle": "Sensor"
   },
   {
@@ -280,7 +339,7 @@
     "name": "GetAllSensors",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetAllSensorsUrl.java",
+    "filename": "src/main/java/api/sensor/GetAllSensorsUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -323,7 +382,7 @@
       }
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorsHouseUrl.java",
+    "filename": "src/main/java/api/house/GetSensorsHouseUrl.java",
     "groupTitle": "Sensor"
   },
   {
@@ -348,7 +407,7 @@
     "examples": [
       {
         "title": "Example url:",
-        "content": "https://api.visualidata.nl/sensor/CHIBB-Test-Node",
+        "content": "https://api.visualidata.nl/sensor/CHIBB-Test-02",
         "type": "js"
       }
     ],
@@ -369,18 +428,18 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n    {\"statuscode\":200,\"data\":{\"nodeName\":\"Test-Node\",\"type\":\"Temperature\",\"nodeType\":\"Data Collection Node\",\"sensorId\":\"CHIBB-Node-Test\"},\"message\":\"\",\"status\":\"success\"}",
+          "content": "HTTP/1.1 200 OK\n    {\"statuscode\":200,\"data\":{\"sensor_id\":\"CHIBB-Test-02\",\"nodeName\":\"\",\"position\":{\"x\":\"1179\",\"y\":\"418\",\"floor\":\"1\",\"house\":\"CHIBB\"},\"type\":\"Temperature\",\"nodeType\":\"\",\"status\":\"active\"},\"message\":\"\",\"status\":\"success\"}",
           "type": "json"
         }
       ]
     },
     "version": "1.0.0",
-    "filename": "src/main/java/api/GetSensorURL.java",
+    "filename": "src/main/java/api/sensor/GetSensorURL.java",
     "groupTitle": "Sensor"
   },
   {
     "type": "post",
-    "url": "/sensor",
+    "url": "/sensor/update",
     "title": "Update a sensor",
     "header": {
       "fields": {
@@ -398,7 +457,7 @@
     "name": "UpdateSensor",
     "group": "Sensor",
     "version": "1.0.0",
-    "filename": "src/main/java/api/UpdateSensorUrl.java",
+    "filename": "src/main/java/api/sensor/UpdateSensorUrl.java",
     "groupTitle": "Sensor"
   }
 ]

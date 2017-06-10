@@ -6,4 +6,5 @@ JAVA
 Framework:
 Spark
 
-Api documentation: [apidoc](http://apidocjs.com/)
+Api documentation: [apidoc](http://apidocjs.com/) <br />
+Generate api documentation: _apidoc -i src/main/java/api/ -o src/main/resources/public/_
