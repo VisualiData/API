@@ -57,18 +57,20 @@ public class Application{
         options("/*", (Request request, Response response) -> "OK");
 
         before((request, response) -> {
-            if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING && !"OPTIONS".equals(request.requestMethod())) {
-                if (!authenticated(request)) {
-                    halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
+            if(!"OPTIONS".equals(request.requestMethod())){
+                if (DBConnector.getDBState() == DatabaseState.STATE_RUNNING) {
+                    if (!authenticated(request)) {
+                        halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
+                    }
+                    if(request.headers("From") != null){
+                        DBNames.setSensorData(request.headers("From"));
+                    }else{
+                        DBNames.setSensorData("");
+                    }
+                } else {
+                    DBQuery.checkDBUp();
+                    halt(HttpCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", HttpCodes.SERVER_ERROR).toJSONString());
                 }
-                if(request.headers("From") != null){
-                    DBNames.setSensorData(request.headers("From"));
-                }else{
-                    DBNames.setSensorData("");
-                }
-            } else {
-                DBQuery.checkDBUp();
-                halt(HttpCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", HttpCodes.SERVER_ERROR).toJSONString());
             }
         });
 
