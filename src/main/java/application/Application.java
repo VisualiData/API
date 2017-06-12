@@ -62,12 +62,7 @@ public class Application{
                     if (!authenticated(request)) {
                         halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
                     }
-                    // check if from header is present
-                    if(request.headers("From") != null){
-                        DBNames.setSensorData(request.headers("From"));
-                    }else{
-                        DBNames.setSensorData("");
-                    }
+                    checkFrom(request);
                 } else {
                     DBQuery.checkDBUp();
                     halt(HttpCodes.SERVER_ERROR, ResponseUtil.generateFailed("DB down", HttpCodes.SERVER_ERROR).toJSONString());
@@ -81,6 +76,15 @@ public class Application{
             response.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT, DELETE");
             response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
         });
+    }
+
+    private static void checkFrom(Request request) {
+        // check if from header is present
+        if(request.headers("From") != null){
+            DBNames.setSensorData(request.headers("From"));
+        }else{
+            DBNames.setSensorData("");
+        }
     }
 
     // Custom error responses
