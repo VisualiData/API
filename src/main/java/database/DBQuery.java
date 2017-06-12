@@ -3,7 +3,6 @@ package database;
 import com.mongodb.*;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.DeleteResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONArray;
@@ -34,20 +33,7 @@ public class DBQuery {
         return result.size() == 1;
     }
 
-    public static JSONObject deleteQuery(String collectionName, BasicDBObject find){
-        MongoDatabase db = DBConnector.getInstance().getDB();
-        MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
-        DeleteResult deleteResult = collection.deleteOne(find);
-        boolean deleted = false;
-        if(deleteResult.getDeletedCount() > 0){
-            deleted = true;
-        }
-        JSONObject result = new JSONObject();
-        result.put("deleted", deleted);
-        return result;
-    }
-
-    // Find document by specific value
+    // Find documents by specific value
     public static JSONArray find(String collectionName, String key, String value, BasicDBObject fields){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
@@ -59,7 +45,7 @@ public class DBQuery {
         }
         return result;
     }
-
+    // Find documents by custom query
     public static JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
@@ -69,7 +55,7 @@ public class DBQuery {
         }
         return result;
     }
-
+    // Find document by custom query with possibility to sort result
     public static JSONArray findQuery(String collectionName, BasicDBObject whereQuery, BasicDBObject fields, BasicDBObject sort){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
@@ -97,6 +83,7 @@ public class DBQuery {
         return result;
     }
 
+    // Insert multiple documents at once
     public static JSONObject insertMany(String collectionName, List<BasicDBObject> documents){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
@@ -119,6 +106,7 @@ public class DBQuery {
         collection.renameCollection(new MongoNamespace(DB_NAME, newCollectionName));
     }
 
+    // Update given field of a document
     public static JSONObject updateQuery(String collectionName, BasicDBObject find, BasicDBObject replace){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
@@ -132,6 +120,7 @@ public class DBQuery {
         return result;
     }
 
+    // Replace a complete document
     public static JSONObject replaceQuery(String collectionName, BasicDBObject find, BasicDBObject replace){
         MongoDatabase db = DBConnector.getInstance().getDB();
         MongoCollection<BasicDBObject> collection = db.getCollection(collectionName, BasicDBObject.class);
