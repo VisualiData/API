@@ -62,6 +62,7 @@ public class Application{
                     if (!authenticated(request)) {
                         halt(HttpCodes.NOT_AUTHORIZED, ResponseUtil.generateFailed("Not authorized", HttpCodes.NOT_AUTHORIZED).toJSONString());
                     }
+                    // check if from header is present
                     if(request.headers("From") != null){
                         DBNames.setSensorData(request.headers("From"));
                     }else{
@@ -73,7 +74,7 @@ public class Application{
                 }
             }
         });
-
+        // add headers for response, Access-Control headers are for ajax calls
         after((request, response) -> {
             response.type("application/json");
             response.header("Access-Control-Allow-Origin", "*");
